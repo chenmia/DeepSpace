@@ -1,4 +1,4 @@
-package com.missionbit.game;
+package com.missionbit.deepspace;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;

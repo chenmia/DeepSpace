@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.missionbit.game.DeepSpace;
+import com.missionbit.deepspace.DeepSpace;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override
