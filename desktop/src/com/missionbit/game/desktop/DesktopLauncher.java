@@ -7,6 +7,8 @@ import com.missionbit.deepspace.DeepSpace;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		config.width = DeepSpace.WIDTH;
+		config.height = DeepSpace.HEIGHT;
 		new LwjglApplication(new DeepSpace(), config);
 	}
 }

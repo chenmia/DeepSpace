@@ -6,13 +6,13 @@ import com.badlogic.gdx.math.Vector3;
 
 
 public abstract class State {
-    protected PerspectiveCamera cam;
+    protected PerspectiveCamera camera;
     protected Vector3 mouse;
     protected GameStateManager gsm;
 
     protected State(GameStateManager gsm){
         this.gsm = gsm;
-        cam = new PerspectiveCamera();
+        camera = new PerspectiveCamera();
         mouse = new Vector3();
     }
 
