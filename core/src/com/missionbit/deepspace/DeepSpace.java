@@ -27,7 +27,7 @@ public class DeepSpace extends ApplicationAdapter implements InputProcessor {
 	private PerspectiveCamera camera;
 	private ModelBatch modelBatch;
 	private ModelBuilder modelBuilder;
-	private Model box;
+	private Model planet;
 	private ModelInstance modelInstance;
 	private Environment environment;
 
@@ -42,10 +42,11 @@ public class DeepSpace extends ApplicationAdapter implements InputProcessor {
 
 	modelBatch = new ModelBatch();
 	modelBuilder = new ModelBuilder();
-	box = modelBuilder.createBox(2f, 2f, 2f,
+	planet = modelBuilder.createSphere(2f, 2f, 2f, 10, 10,
 			new Material(ColorAttribute.createDiffuse(Color.BLUE)),
 			VertexAttributes.Usage.Position|VertexAttributes.Usage.Normal);
-	modelInstance = new ModelInstance(box, 0, 0, 0);
+
+	modelInstance = new ModelInstance(planet, 0, 0, 0);
 	environment = new Environment();
 	environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1f));
 	Gdx.input.setInputProcessor(this);
@@ -66,7 +67,7 @@ public class DeepSpace extends ApplicationAdapter implements InputProcessor {
 	
 	@Override
 	public void dispose () {
-	box.dispose();
+	planet.dispose();
 	modelBatch.dispose();
 
 	}
