@@ -3,44 +3,25 @@ package com.missionbit.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.Material;
-import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;;
 import com.badlogic.gdx.math.Vector3;
+import com.missionbit.sprites.Planets;
 
 public class PlayState extends State implements InputProcessor {
     private ModelBatch modelBatch;
-    private ModelBuilder modelBuilder;
-    private Model planet;
-    private ModelInstance modelInstance;
-    private Environment environment;
+    private Planets planet;
     public PlayState(GameStateManager gsm) {
         super(gsm);
+        planet = new Planets();
         camera = new PerspectiveCamera(75, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.position.set(0f, 0f, 3f);
         camera.lookAt(0f, 0f, 0f);
         camera.near = 0.1f;
         camera.far = 300f;
-
         modelBatch = new ModelBatch();
-        modelBuilder = new ModelBuilder();
-        planet = modelBuilder.createSphere(2f, 2f, 2f, 10, 10,
-                new Material(ColorAttribute.createDiffuse(Color.BLUE)),
-                VertexAttributes.Usage.Position|VertexAttributes.Usage.Normal);
-
-        modelInstance = new ModelInstance(planet, 0, 0, 0);
-        environment = new Environment();
-        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1f));
         Gdx.input.setInputProcessor(this);
 
     }
@@ -64,7 +45,7 @@ public class PlayState extends State implements InputProcessor {
 
         camera.update();
         modelBatch.begin(camera);
-        modelBatch.render(modelInstance, environment);
+        modelBatch.render(planet.getModelInstance(),planet.getEnvironment());
         modelBatch.end();
     }
 
