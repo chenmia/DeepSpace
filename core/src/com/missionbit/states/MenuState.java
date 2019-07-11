@@ -8,11 +8,14 @@ public class MenuState extends State {
     private Texture playBtn;
     private Texture title;
     private Texture background;
+    private Texture logo;
+
     public MenuState(GameStateManager gsm) {
         super(gsm);
         playBtn = new Texture("playbtn.png");
         title = new Texture("title.png");
         background = new Texture("background.png");
+        logo = new Texture("logo.png");
     }
 
     @Override
@@ -35,6 +38,7 @@ public class MenuState extends State {
         sb.draw(background, 0 ,0);
         sb.draw(title, 120, 600);
         sb.draw(playBtn, 45, 100);
+        sb.draw(logo, 100, 250);
         sb.end();
     }
 
@@ -43,6 +47,7 @@ public class MenuState extends State {
         playBtn.dispose();
         title.dispose();
         background.dispose();
+        logo.dispose();
         System.out.println("Menu State Disposed");
     }
 }
