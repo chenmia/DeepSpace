@@ -20,7 +20,7 @@ public class Planets{
                 new Material(ColorAttribute.createDiffuse(Color.BLUE)),
                 VertexAttributes.Usage.Position|VertexAttributes.Usage.Normal);
 
-        modelInstance = new ModelInstance(planet, 0, 0, 0);
+        modelInstance = new ModelInstance(planet, 0, 2, 0);
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1f));
 //        Gdx.input.setInputProcessor(this);
