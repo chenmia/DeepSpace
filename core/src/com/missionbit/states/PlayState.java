@@ -7,13 +7,15 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.ModelBatch;;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.model.Animation;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.missionbit.sprites.Photon;
 import com.missionbit.sprites.Planet;
 import com.missionbit.sprites.Spaceship;
+import com.missionbit.sprites.Stars;
 
 import java.util.ArrayList;
 
@@ -24,12 +26,15 @@ public class PlayState extends State implements InputProcessor {
     private ArrayList<Photon> photons;
     private Array<ModelInstance> instances = new Array<ModelInstance>();
     private Array<Environment> environments = new Array<Environment>();
+    private Stars starfield;
+
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
         planet = new Planet();
         ship = new Spaceship();
         photons = new ArrayList<Photon>();
+        starfield = new Stars();
         for(int i = 0; i<10; i++){
             photons.add(new Photon());
             instances.add(photons.get(i).getModelInstance());
@@ -64,13 +69,17 @@ public class PlayState extends State implements InputProcessor {
     public void render(SpriteBatch sb) {
        sb.setProjectionMatrix(camera.combined);
 
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT|GL20.GL_DEPTH_BUFFER_BIT);
 
         camera.update();
+        starfield.render();
         modelBatch.begin(camera);
         modelBatch.render(instances, planet.getEnvironment());
         modelBatch.end();
+
+
     }
 
     @Override
