@@ -9,11 +9,8 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 
-public class Planets{
-    private ModelBuilder modelBuilder;
+public class Planets extends Floater{
     private Model planet;
-    public ModelInstance modelInstance;
-    public Environment environment;
     public Planets() {
         modelBuilder = new ModelBuilder();
         planet = modelBuilder.createSphere(2f, 2f, 2f, 10, 10,
@@ -38,13 +35,6 @@ public class Planets{
 
     public void dispose() {
         planet.dispose();
-    }
-
-    public ModelInstance getModelInstance(){
-        return modelInstance;
-    }
-    public Environment getEnvironment(){
-        return environment;
     }
 }
 //

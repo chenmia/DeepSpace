@@ -68,6 +68,7 @@ public class PlayState extends State implements InputProcessor {
     public void dispose() {
         planet.dispose();
         modelBatch.dispose();
+        System.out.println("Play State Disposed");
     }
 
     public boolean keyDown(int keycode) {

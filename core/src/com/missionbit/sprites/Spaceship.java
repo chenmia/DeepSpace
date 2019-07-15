@@ -10,10 +10,8 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
 
-public class Spaceship {
-    public ModelInstance ship;
-    public Model model;
-    public Environment environment;
+public class Spaceship extends Floater {
+    private Model ship;
 
     public Spaceship() {
         environment = new Environment();
@@ -21,17 +19,11 @@ public class Spaceship {
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
 
         ModelLoader loader = new ObjLoader();
-        model = loader.loadModel(Gdx.files.internal("ship/ship.obj"));
-        ship = new ModelInstance(model);
+        ship = loader.loadModel(Gdx.files.internal("ship/ship.obj"));
+        modelInstance = new ModelInstance(ship);
     }
 
-    public ModelInstance getModelInstance(){
-        return ship;
-    }
 
-    public Environment getEnvironment(){
-        return environment;
-    }
     public void dispose() {
 
     }

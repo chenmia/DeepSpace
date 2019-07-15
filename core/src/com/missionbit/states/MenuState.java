@@ -36,8 +36,8 @@ public class MenuState extends State {
         //sb.setProjectionMatrix(camera.combined); //this makes textures not visible not sure why
         sb.begin();
         sb.draw(background, 0 ,0);
-        sb.draw(title, 120, 600);
-        sb.draw(playBtn, 45, 100);
+        sb.draw(title, 75, 600);
+        sb.draw(playBtn, 25, 100);
         sb.draw(logo, 100, 250);
         sb.end();
     }
