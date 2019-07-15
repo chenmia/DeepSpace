@@ -29,7 +29,7 @@ public class PlayState extends State implements InputProcessor {
     private Stars starfield;
 
 
-    public PlayState(GameStateManager gsm) {
+     public PlayState(GameStateManager gsm) {
         super(gsm);
         planet = new Planet();
         ship = new Spaceship();
