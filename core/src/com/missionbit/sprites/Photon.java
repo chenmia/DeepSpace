@@ -9,17 +9,14 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 
-public class Planets extends Floater{
-    private Model planet;
-    public Planets() {
+public class Photon extends Floater{
+    private Model photon;
+    public Photon() {
         modelBuilder = new ModelBuilder();
-        planet = modelBuilder.createSphere(2f, 2f, 2f, 10, 10,
-                new Material(ColorAttribute.createDiffuse(Color.BLUE)),
-                VertexAttributes.Usage.Position|VertexAttributes.Usage.Normal);
-
-        modelInstance = new ModelInstance(planet, 0, 2, 0);
-        environment = new Environment();
-        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1f));
+        photon = modelBuilder.createBox(0.25f, 0.25f, 0.25f,
+                new Material(ColorAttribute.createDiffuse(Color.YELLOW)),
+                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+        modelInstance = new ModelInstance(photon, 0, -1, 0);
 //        Gdx.input.setInputProcessor(this);
 
     }
@@ -34,8 +31,7 @@ public class Planets extends Floater{
 
 
     public void dispose() {
-        planet.dispose();
+        photon.dispose();
     }
+
 }
-//
-//

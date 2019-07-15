@@ -11,20 +11,29 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
-import com.missionbit.sprites.Planets;
+import com.missionbit.sprites.Photon;
+import com.missionbit.sprites.Planet;
 import com.missionbit.sprites.Spaceship;
+
+import java.util.ArrayList;
 
 public class PlayState extends State implements InputProcessor {
     private ModelBatch modelBatch;
-    private Planets planet;
+    private Planet planet;
     private Spaceship ship;
+    private ArrayList<Photon> photons;
     private Array<ModelInstance> instances = new Array<ModelInstance>();
     private Array<Environment> environments = new Array<Environment>();
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
-        planet = new Planets();
+        planet = new Planet();
         ship = new Spaceship();
+        photons = new ArrayList<Photon>();
+        for(int i = 0; i<10; i++){
+            photons.add(new Photon());
+            instances.add(photons.get(i).getModelInstance());
+        }
         camera = new PerspectiveCamera(75, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         camera.position.set(0f, 0f, 3f);
@@ -67,6 +76,10 @@ public class PlayState extends State implements InputProcessor {
     @Override
     public void dispose() {
         planet.dispose();
+        ship.dispose();
+        for(int i = 0; i<10; i++){
+            photons.get(i).dispose();
+        }
         modelBatch.dispose();
         System.out.println("Play State Disposed");
     }
