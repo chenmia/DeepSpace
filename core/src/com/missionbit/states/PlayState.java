@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -24,9 +25,9 @@ public class PlayState extends State implements InputProcessor {
     private Planet planet;
     private Spaceship ship;
     private ArrayList<Photon> photons;
+    private Stars starfield;
     private Array<ModelInstance> instances = new Array<ModelInstance>();
     private Array<Environment> environments = new Array<Environment>();
-    private Stars starfield;
 
 
     public PlayState(GameStateManager gsm) {
@@ -35,6 +36,7 @@ public class PlayState extends State implements InputProcessor {
         ship = new Spaceship();
         photons = new ArrayList<Photon>();
         starfield = new Stars();
+
         for(int i = 0; i<10; i++){
             photons.add(new Photon());
             instances.add(photons.get(i).getModelInstance());
@@ -74,8 +76,8 @@ public class PlayState extends State implements InputProcessor {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT|GL20.GL_DEPTH_BUFFER_BIT);
 
         camera.update();
-        starfield.render();
         modelBatch.begin(camera);
+        starfield.render();
         modelBatch.render(instances, planet.getEnvironment());
         modelBatch.end();
 

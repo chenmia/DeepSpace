@@ -13,8 +13,8 @@ public class Photon extends Floater{
     private Model photon;
     public Photon() {
         modelBuilder = new ModelBuilder();
-        photon = modelBuilder.createBox(0.25f, 0.25f, 0.25f,
-                new Material(ColorAttribute.createDiffuse(Color.YELLOW)),
+        photon = modelBuilder.createBox(0.1f, 0.1f, 0.1f,
+                new Material(ColorAttribute.createDiffuse(Color.GOLD)),
                 VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
         modelInstance = new ModelInstance(photon, 0, -1, 0);
 //        Gdx.input.setInputProcessor(this);

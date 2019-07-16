@@ -14,7 +14,7 @@ public class Planet extends Floater{
     private Model planet;
     public Planet() {
         modelBuilder = new ModelBuilder();
-        planet = modelBuilder.createSphere(2f, 2f, 2f, 100, 100,
+        planet = modelBuilder.createSphere(0.5f, 0.5f, 0.5f, 100, 100,
                 new Material(ColorAttribute.createDiffuse(Color.BLUE)),
                 VertexAttributes.Usage.Position|VertexAttributes.Usage.Normal);
 

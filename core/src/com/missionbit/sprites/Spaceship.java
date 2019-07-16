@@ -20,7 +20,7 @@ public class Spaceship extends Floater {
 
         ModelLoader loader = new ObjLoader();
         ship = loader.loadModel(Gdx.files.internal("ship/ship.obj"));
-        modelInstance = new ModelInstance(ship);
+        modelInstance = new ModelInstance(ship, 0, -2, 0);
     }
 
 
