@@ -30,7 +30,7 @@ public class PlayState extends State implements InputProcessor {
     private Array<Environment> environments = new Array<Environment>();
 
 
-    public PlayState(GameStateManager gsm) {
+     public PlayState(GameStateManager gsm) {
         super(gsm);
         planet = new Planet();
         ship = new Spaceship();
