@@ -33,7 +33,7 @@ public class PlayState extends State implements InputProcessor {
      public PlayState(GameStateManager gsm) {
         super(gsm);
         planet = new Planet();
-        ship = new Spaceship();
+        ship = new Spaceship(0, 0, 0);
         photons = new ArrayList<Photon>();
         starfield = new Stars();
 
@@ -43,7 +43,7 @@ public class PlayState extends State implements InputProcessor {
         }
         camera = new PerspectiveCamera(75, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        camera.position.set(0f, 0f, 3f);
+        camera.position.set(1f, 2f, -4f);
         camera.lookAt(0f, 0f, 0f);
         camera.near = 0.1f;
         camera.far = 300f;
@@ -69,7 +69,7 @@ public class PlayState extends State implements InputProcessor {
 
     @Override
     public void render(SpriteBatch sb) {
-       sb.setProjectionMatrix(camera.combined);
+        sb.setProjectionMatrix(camera.combined);
 
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -97,9 +97,12 @@ public class PlayState extends State implements InputProcessor {
 
     public boolean keyDown(int keycode) {
         if(keycode == Input.Keys.LEFT)
-            camera.rotateAround(new Vector3(0f, 0f, 0f), new Vector3(0f, 1f, 0f), 20f);
+            //camera.rotateAround(new Vector3(0f, 0f, 0f), new Vector3(0f, 1f, 0f), 20f);
+            ship.moveLeft();
+
         if(keycode == Input.Keys.RIGHT)
-            camera.rotateAround(new Vector3(0f, 0f, 0f), new Vector3(0f, 1f, 0f), -20f);
+            //camera.rotateAround(new Vector3(0f, 0f, 0f), new Vector3(0f, 1f, 0f), -20f);
+            ship.moveRight();
         return true;
     }
 
