@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Array;
 import com.missionbit.sprites.Photon;
 import com.missionbit.sprites.Planet;
 import com.missionbit.sprites.Spaceship;
+import com.missionbit.sprites.Stars;
 
 import java.util.ArrayList;
 
@@ -24,10 +25,12 @@ public class PlayState extends State implements InputProcessor {
     private ArrayList<Photon> photons;
     private Array<ModelInstance> instances = new Array<ModelInstance>();
     private Array<Environment> environments = new Array<Environment>();
+    private Stars starfield;
     private int shipState = 1;
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
+        starfield = new Stars();
         planet = new Planet();
         ship = new Spaceship(0, 0, 0);
         photons = new ArrayList<Photon>();
@@ -70,7 +73,7 @@ public class PlayState extends State implements InputProcessor {
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT|GL20.GL_DEPTH_BUFFER_BIT);
-
+        starfield.render();
         camera.update();
         modelBatch.begin(camera);
         modelBatch.render(instances, planet.getEnvironment());
@@ -81,6 +84,7 @@ public class PlayState extends State implements InputProcessor {
     public void dispose() {
         planet.dispose();
         ship.dispose();
+        starfield.dispose();
         for(int i = 0; i<10; i++){
             photons.get(i).dispose();
         }

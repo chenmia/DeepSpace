@@ -26,4 +26,8 @@ public class Stars {
         batch.end();
 
     }
+
+    public void dispose(){
+        batch.dispose();
+    }
 }
