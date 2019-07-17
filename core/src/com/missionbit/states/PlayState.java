@@ -5,18 +5,15 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.model.Animation;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.missionbit.sprites.Photon;
 import com.missionbit.sprites.Planet;
 import com.missionbit.sprites.Spaceship;
-import com.missionbit.sprites.Stars;
 
 import java.util.ArrayList;
 
@@ -25,25 +22,22 @@ public class PlayState extends State implements InputProcessor {
     private Planet planet;
     private Spaceship ship;
     private ArrayList<Photon> photons;
-    private Stars starfield;
     private Array<ModelInstance> instances = new Array<ModelInstance>();
     private Array<Environment> environments = new Array<Environment>();
+    private int shipState = 1;
 
-
-     public PlayState(GameStateManager gsm) {
+    public PlayState(GameStateManager gsm) {
         super(gsm);
         planet = new Planet();
         ship = new Spaceship(0, 0, 0);
         photons = new ArrayList<Photon>();
-        starfield = new Stars();
-
         for(int i = 0; i<10; i++){
             photons.add(new Photon());
             instances.add(photons.get(i).getModelInstance());
         }
         camera = new PerspectiveCamera(75, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        camera.position.set(1f, 2f, -4f);
+        camera.position.set(1f, 2f, 4f);
         camera.lookAt(0f, 0f, 0f);
         camera.near = 0.1f;
         camera.far = 300f;
@@ -64,24 +58,23 @@ public class PlayState extends State implements InputProcessor {
 
     @Override
     public void update(float dt) {
-
+        if(shipState == 0)
+            ship.moveLeft();
+        else if(shipState == 2)
+            ship.moveRight();
     }
 
     @Override
     public void render(SpriteBatch sb) {
         sb.setProjectionMatrix(camera.combined);
 
-
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT|GL20.GL_DEPTH_BUFFER_BIT);
 
         camera.update();
         modelBatch.begin(camera);
-        starfield.render();
         modelBatch.render(instances, planet.getEnvironment());
         modelBatch.end();
-
-
     }
 
     @Override
@@ -97,16 +90,17 @@ public class PlayState extends State implements InputProcessor {
 
     public boolean keyDown(int keycode) {
         if(keycode == Input.Keys.LEFT)
-            //camera.rotateAround(new Vector3(0f, 0f, 0f), new Vector3(0f, 1f, 0f), 20f);
-            ship.moveLeft();
+            shipState = 0;
 
-        if(keycode == Input.Keys.RIGHT)
-            //camera.rotateAround(new Vector3(0f, 0f, 0f), new Vector3(0f, 1f, 0f), -20f);
-            ship.moveRight();
+        else if(keycode == Input.Keys.RIGHT)
+            shipState = 2;
+
         return true;
     }
 
     public boolean keyUp(int keycode) {
+        if(keycode == Input.Keys.LEFT || keycode == Input.Keys.RIGHT)
+            shipState = 1;
         return false;
     }
 
