@@ -2,10 +2,12 @@ package com.missionbit.deepspace;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.missionbit.states.GameStateManager;
+import com.missionbit.states.LoadingState;
 import com.missionbit.states.MenuState;
 
 
@@ -17,6 +19,7 @@ public class DeepSpace extends ApplicationAdapter {
 	private SpriteBatch batch;
 	private Music deepmusic;
 
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -25,7 +28,7 @@ public class DeepSpace extends ApplicationAdapter {
 		deepmusic.setVolume(0.5f);
 		deepmusic.play();
 		gsm = new GameStateManager();
-		gsm.push(new MenuState(gsm));
+		gsm.push(new LoadingState(gsm));
 
 	}
 
@@ -40,4 +43,5 @@ public class DeepSpace extends ApplicationAdapter {
 	public void dispose () {
 		super.dispose();
 	}
+
 }
