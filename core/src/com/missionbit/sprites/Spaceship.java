@@ -1,6 +1,5 @@
 package com.missionbit.sprites;
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.loaders.ModelLoader;
 import com.badlogic.gdx.graphics.g3d.Environment;
@@ -9,13 +8,13 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector3;
 
 public class Spaceship extends Floater {
     private Model ship;
-    private boolean movingLeft;
-    private boolean movingRight;
+    private float radians = 270;
+    private float radius = 2;
+    private double rotationAngle;
 
     public Spaceship(int x, int y, int z) {
         environment = new Environment();
@@ -25,11 +24,9 @@ public class Spaceship extends Floater {
         ModelLoader loader = new ObjLoader();
         ship = loader.loadModel(Gdx.files.internal("ship/ship.obj"));
         modelInstance = new ModelInstance(ship);
-        //modelInstance.transform.rotate(180, 0);
         position = new Vector3(x, y, z);
-
-        movingLeft = false;
-        movingRight = false;
+        modelInstance.transform.setToRotation(Vector3.Y, 180);
+        modelInstance.transform.translate(position);
     }
 
 
@@ -40,19 +37,22 @@ public class Spaceship extends Floater {
     public Vector3 getPosition(){
         return position;
     }
-    public void toggleMovingLeft(){
-        movingLeft = !movingLeft;
-    }
 
-    public void toggleMovingRight(){
-        movingRight = !movingRight;
-    }
     public void moveLeft(){
-        position.x -= 0.01;
-        modelInstance.transform.translate(position);
+        radians -= 0.1;
     }
     public void moveRight(){
-        position.x += 0.01;
-        modelInstance.transform.translate(position);
+        radians += 0.1;
+    }
+
+    public void update(){
+        position.x = radius * (float)Math.cos(radians);
+        position.y = radius * (float)Math.sin(radians);
+        rotationAngle = Math.atan2(position.x, position.y);
+
+        modelInstance.transform.setToTranslation(position);
+        modelInstance.transform.rotate(Vector3.X, 20);
+        modelInstance.transform.rotate(Vector3.Y, 180);
+        modelInstance.transform.rotate(Vector3.Z, (float)(rotationAngle*180/Math.PI) + 180);
     }
 }

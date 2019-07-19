@@ -9,7 +9,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.utils.Array;
 import com.missionbit.sprites.Photon;
 import com.missionbit.sprites.Planet;
@@ -24,15 +25,15 @@ public class PlayState extends State implements InputProcessor {
     private Spaceship ship;
     private ArrayList<Photon> photons;
     private Array<ModelInstance> instances = new Array<ModelInstance>();
-    private Array<Environment> environments = new Array<Environment>();
     private Stars starfield;
     private int shipState = 1;
+    private Environment environment;
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
         starfield = new Stars();
         planet = new Planet();
-        ship = new Spaceship(0, 0, 0);
+        ship = new Spaceship(0, -1, 0);
         photons = new ArrayList<Photon>();
         for(int i = 0; i<10; i++){
             photons.add(new Photon());
@@ -40,7 +41,7 @@ public class PlayState extends State implements InputProcessor {
         }
         camera = new PerspectiveCamera(75, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        camera.position.set(1f, 2f, 4f);
+        camera.position.set(0f, 0f, 6f);
         camera.lookAt(0f, 0f, 0f);
         camera.near = 0.1f;
         camera.far = 300f;
@@ -48,10 +49,12 @@ public class PlayState extends State implements InputProcessor {
 
         instances.add(planet.getModelInstance());
         instances.add(ship.getModelInstance());
-        environments.add(planet.getEnvironment());
 
         Gdx.input.setInputProcessor(this);
 
+        environment = new Environment();
+        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1f));
+        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
     }
 
     @Override
@@ -65,6 +68,7 @@ public class PlayState extends State implements InputProcessor {
             ship.moveLeft();
         else if(shipState == 2)
             ship.moveRight();
+        ship.update();
     }
 
     @Override
@@ -76,7 +80,7 @@ public class PlayState extends State implements InputProcessor {
         starfield.render();
         camera.update();
         modelBatch.begin(camera);
-        modelBatch.render(instances, planet.getEnvironment());
+        modelBatch.render(instances, environment);
         modelBatch.end();
     }
 
@@ -98,7 +102,6 @@ public class PlayState extends State implements InputProcessor {
 
         else if(keycode == Input.Keys.RIGHT)
             shipState = 2;
-
         return true;
     }
 
