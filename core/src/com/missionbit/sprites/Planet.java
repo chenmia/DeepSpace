@@ -12,7 +12,10 @@ import com.badlogic.gdx.math.Vector3;
 public class Planet extends Floater{
     private Model planet;
     private Color color;
+    private Vector3 position;
+
     public Planet(float x, float y, float z, float d, int r) {
+
         modelBuilder = new ModelBuilder();
         if(r == 0)
             color = Color.BLUE;
@@ -35,6 +38,8 @@ public class Planet extends Floater{
                 new Material(ColorAttribute.createDiffuse(color)),
                 VertexAttributes.Usage.Position|VertexAttributes.Usage.Normal);
         modelInstance = new ModelInstance(planet, x, y, z);
+        position = modelInstance.transform.getTranslation(new Vector3());
+
     }
 
     public void handleInput() {
@@ -42,14 +47,24 @@ public class Planet extends Floater{
     }
 
     public void update() {
+        position = modelInstance.transform.getTranslation(new Vector3());
         modelInstance.transform.rotate( Vector3.Z, 180);
-        modelInstance.transform.translate( 0, 0, (float) 0.02);
+        modelInstance.transform.translate( 0, 0, (float) 0.05);
+
     }
 
+    public void resetXY(){
+        modelInstance.transform.translate((float) (Math.random() * 4.01) - 2, (float) (Math.random() * 6.01) - 3, -5);
+    }
+    public float getZ(){
+        return position.z;
+    }
 
     public void dispose() {
         planet.dispose();
     }
+
+
 }
 //
 //

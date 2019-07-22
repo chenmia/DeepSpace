@@ -38,7 +38,7 @@ public class PlayScreen implements Screen, InputProcessor {
 //        starfield = new Stars();
         planet = new ArrayList<Planet>();
         for (int j = 0; j < PLANET_COUNT; j++) {
-            planet.add(new Planet((float) (Math.random() * 4.01) - 2, (float) (Math.random() * 6.01) - 3, (float) (Math.random() * 4.01) - 2, (float) (Math.random() * 1.01), (int) (Math.random() * 8)));
+            planet.add(new Planet((float) (Math.random() * 4.01) - 2, (float) (Math.random() * 6.01) - 3, (float) (Math.random() * 10.01) - 5, (float) (Math.random() * 2.01), (int) (Math.random() * 8)));
             instances.add(planet.get(j).getModelInstance());
         }
         ship = new Spaceship(0, -1, 0);
@@ -93,12 +93,34 @@ public class PlayScreen implements Screen, InputProcessor {
 
         for (int l = 0; l < PLANET_COUNT; l++) {
             planet.get(l).update();
+            if (planet.get(0).getZ() > 4) {
+                planet.get(0).resetXY();
+            }
+            if (planet.get(1).getZ() > 4) {
+                planet.get(1).resetXY();
+            }
+            if (planet.get(2).getZ() > 4) {
+                planet.get(2).resetXY();
+            }
+            if (planet.get(3).getZ() > 4) {
+                planet.get(3).resetXY();
+            }
         }
             for (int i = 0; i < 4; i++) {
                 photons.get(i).update();
                 System.out.println(photons.get(i).getZ());
-                if (photons.get(i).getZ() > 5) {
-                    photons.get(i).resetXY();
+
+                if (photons.get(0).getZ() > 5) {
+                    photons.get(0).resetXY();
+                }
+                if (photons.get(1).getZ() > 5) {
+                    photons.get(1).resetXY();
+                }
+                if (photons.get(2).getZ() > 5) {
+                    photons.get(2).resetXY();
+                }
+                if (photons.get(3).getZ() > 5) {
+                    photons.get(3).resetXY();
                 }
             }
         }
