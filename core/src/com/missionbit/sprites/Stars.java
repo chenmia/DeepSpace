@@ -25,9 +25,10 @@ public class Stars {
         batch.draw(animation.getKeyFrame(elapsed), 0f, 0f);
         batch.end();
 
-    }
 
+    }
     public void dispose(){
         batch.dispose();
     }
+
 }

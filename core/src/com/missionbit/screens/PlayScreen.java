@@ -1,16 +1,18 @@
-package com.missionbit.states;
+package com.missionbit.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.ModelBatch;;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.utils.Array;
+import com.missionbit.deepspace.DeepSpace;
 import com.missionbit.sprites.Photon;
 import com.missionbit.sprites.Planet;
 import com.missionbit.sprites.Spaceship;
@@ -18,22 +20,29 @@ import com.missionbit.sprites.Stars;
 
 import java.util.ArrayList;
 
-public class PlayState extends State implements InputProcessor {
+public class PlayScreen implements Screen, InputProcessor {
+    private final DeepSpace game;
     private ModelBatch modelBatch;
-    private Planet planet;
+    private ArrayList<Planet> planet;
     private Spaceship ship;
     private ArrayList<Photon> photons;
     private Array<ModelInstance> instances = new Array<ModelInstance>();
-    private Array<Environment> environments = new Array<Environment>();
-//    private Stars starfield;
-    private Assets assets;
     private int shipState = 1;
+    private int PLANET_COUNT = 4;
+    private Environment environment;
+    private PerspectiveCamera camera;
 
-    public PlayState(GameStateManager gsm) {
-        super(gsm);
-//        starfield = assets.assetManager.get(Assets.STARS);
-        planet = new Planet();
-        ship = new Spaceship(0, 0, 0);
+
+
+    public PlayScreen(final DeepSpace game) {
+        this.game = game;
+//        starfield = new Stars();
+        planet = new ArrayList<Planet>();
+        for(int j = 0; j <PLANET_COUNT; j++) {
+            planet.add(new Planet((float)(Math.random() * 4.01) - 2, (float)(Math.random() * 6.01) - 3, (float)(Math.random() * 4.01) - 2, (float)(Math.random() * 1.01), (int)(Math.random() * 8)));
+            instances.add(planet.get(j).getModelInstance());
+        }
+        ship = new Spaceship(0, -1, 0);
         photons = new ArrayList<Photon>();
         for(int i = 0; i<10; i++){
             photons.add(new Photon());
@@ -41,51 +50,77 @@ public class PlayState extends State implements InputProcessor {
         }
         camera = new PerspectiveCamera(75, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        camera.position.set(1f, 2f, 4f);
+        camera.position.set(0f, 0f, 6f);
         camera.lookAt(0f, 0f, 0f);
         camera.near = 0.1f;
         camera.far = 300f;
         modelBatch = new ModelBatch();
 
-        instances.add(planet.getModelInstance());
-        instances.add(ship.getModelInstance());
-        environments.add(planet.getEnvironment());
+        for(int k = 0; PLANET_COUNT<4; k++)
+            instances.add(planet.get(k).getModelInstance());        instances.add(ship.getModelInstance());
 
         Gdx.input.setInputProcessor(this);
 
+        environment = new Environment();
+        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1f));
+        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
     }
 
     @Override
-    public void handleInput() {
+    public void show() {
 
     }
 
     @Override
-    public void update(float dt) {
+    public void render(float delta) {
+        Gdx.gl.glClearColor(0, 0, 0, 0);
+//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
+
+        camera.update();
+        game.batch.setProjectionMatrix(camera.combined);
+//        starfield.render();
+        game.batch.begin();
+        modelBatch.begin(camera);
+        modelBatch.render(instances, environment);
+        modelBatch.end();
+        game.batch.end();
         if(shipState == 0)
             ship.moveLeft();
         else if(shipState == 2)
             ship.moveRight();
+        ship.update();
+
+        for(int l = 0; l < PLANET_COUNT; l++)
+            planet.get(l).update();
+        //PLANET_COUNT = 0;
     }
 
     @Override
-    public void render(SpriteBatch sb) {
-        sb.setProjectionMatrix(camera.combined);
+    public void resize(int width, int height) {
 
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT|GL20.GL_DEPTH_BUFFER_BIT);
-//        starfield.render();
-        camera.update();
-        modelBatch.begin(camera);
-        modelBatch.render(instances, planet.getEnvironment());
-        modelBatch.end();
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
     }
 
     @Override
     public void dispose() {
-        planet.dispose();
-        ship.dispose();
-//        starfield.dispose();
+        for(int j = 0; j<PLANET_COUNT; j++){
+            planet.get(j).dispose();
+        }
         for(int i = 0; i<10; i++){
             photons.get(i).dispose();
         }
@@ -99,7 +134,6 @@ public class PlayState extends State implements InputProcessor {
 
         else if(keycode == Input.Keys.RIGHT)
             shipState = 2;
-        System.out.println(ship.getPosition());
         return true;
     }
 
@@ -133,4 +167,3 @@ public class PlayState extends State implements InputProcessor {
         return false;
     }
 }
-
