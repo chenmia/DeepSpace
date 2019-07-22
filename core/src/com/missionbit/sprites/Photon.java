@@ -8,9 +8,11 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.math.Vector3;
 
 public class Photon extends Floater{
     private Model photon;
+
     public Photon() {
         modelBuilder = new ModelBuilder();
         photon = modelBuilder.createBox(0.1f, 0.1f, 0.1f,
@@ -24,7 +26,7 @@ public class Photon extends Floater{
     }
 
     public void update(float dt) {
-
+        modelInstance.transform.rotate(Vector3.Y, (float)0.5);
     }
 
 

@@ -39,7 +39,14 @@ public class PlayScreen implements Screen, InputProcessor {
 //        starfield = new Stars();
         planet = new ArrayList<Planet>();
         for(int j = 0; j <PLANET_COUNT; j++) {
-            planet.add(new Planet((float)(Math.random() * 4.01) - 2, (float)(Math.random() * 6.01) - 3, (float)(Math.random() * 4.01) - 2, (float)(Math.random() * 1.01), (int)(Math.random() * 8)));
+            float x = (float)(Math.random() * 6.01) - 3;
+            float y =
+            float z;
+            planet.add(new Planet((float)(Math.random() * 4.01) - 2,
+                    (float)(Math.random() * 6.01) - 3,
+                    (float)(Math.random() * 4.01) - 2,
+                    (float)(Math.random() * 1.01),
+                    (int)(Math.random() * 8)));
             instances.add(planet.get(j).getModelInstance());
         }
         ship = new Spaceship(0, -1, 0);
@@ -134,6 +141,9 @@ public class PlayScreen implements Screen, InputProcessor {
 
         else if(keycode == Input.Keys.RIGHT)
             shipState = 2;
+
+        if(keycode == Input.Keys.R)
+            gsm.set(new PlayState(gsm));
         return true;
     }
 
