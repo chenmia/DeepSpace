@@ -12,23 +12,32 @@ import com.badlogic.gdx.math.Vector3;
 
 public class Photon extends Floater{
     private Model photon;
-
-    public Photon() {
+    private Vector3 position;
+    public Photon(float x, float y) {
         modelBuilder = new ModelBuilder();
         photon = modelBuilder.createBox(0.1f, 0.1f, 0.1f,
                 new Material(ColorAttribute.createDiffuse(Color.GOLD)),
                 VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
-        modelInstance = new ModelInstance(photon, 0,1, -5);
+        modelInstance = new ModelInstance(photon, x,y, -5);
+        position = modelInstance.transform.getTranslation(new Vector3());
     }
 
     public void handleInput() {
 
     }
 
-    public void update(float dt) {
-        modelInstance.transform.rotate(Vector3.Y, (float)0.5);
+    public void update() {
+        position = modelInstance.transform.getTranslation(new Vector3());
+        modelInstance.transform.translate( 0, 0, (float) 0.05);
+
     }
 
+    public void resetXY(){
+        modelInstance.transform.translate( (float) (Math.random() * 4 - 2), (float) (Math.random() * 4 - 2), -5);
+    }
+    public float getZ(){
+        return position.z;
+    }
 
     public void dispose() {
         photon.dispose();

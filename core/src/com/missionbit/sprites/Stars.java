@@ -9,12 +9,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class Stars {
 
      private SpriteBatch batch;
-     private Animation<TextureRegion> animation;
      private float elapsed;
+     private Animation<TextureRegion> animation =  GifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, Gdx.files.internal("starfield.gif").read());
+
 
     public Stars() {
         batch = new SpriteBatch();
-        animation = GifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, Gdx.files.internal("starfield.gif").read());
     }
 
     public void render(){
