@@ -33,19 +33,18 @@ public class PlayScreen implements Screen, InputProcessor {
     private PerspectiveCamera camera;
 
 
-
     public PlayScreen(final DeepSpace game) {
         this.game = game;
 //        starfield = new Stars();
         planet = new ArrayList<Planet>();
-        for(int j = 0; j <PLANET_COUNT; j++) {
-            planet.add(new Planet((float)(Math.random() * 4.01) - 2, (float)(Math.random() * 6.01) - 3, (float)(Math.random() * 4.01) - 2, (float)(Math.random() * 1.01), (int)(Math.random() * 8)));
+        for (int j = 0; j < PLANET_COUNT; j++) {
+            planet.add(new Planet((float) (Math.random() * 4.01) - 2, (float) (Math.random() * 6.01) - 3, (float) (Math.random() * 4.01) - 2, (float) (Math.random() * 1.01), (int) (Math.random() * 8)));
             instances.add(planet.get(j).getModelInstance());
         }
         ship = new Spaceship(0, -1, 0);
         photons = new ArrayList<Photon>();
-        for(int i = 0; i<10; i++){
-            photons.add(new Photon());
+        for (int i = 0; i < 4; i++) {
+            photons.add(new Photon(((float) (Math.random() * 4 - 2)), (float) (Math.random() * 4 - 2)));
             instances.add(photons.get(i).getModelInstance());
         }
         camera = new PerspectiveCamera(75, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -56,8 +55,9 @@ public class PlayScreen implements Screen, InputProcessor {
         camera.far = 300f;
         modelBatch = new ModelBatch();
 
-        for(int k = 0; PLANET_COUNT<4; k++)
-            instances.add(planet.get(k).getModelInstance());        instances.add(ship.getModelInstance());
+        for (int k = 0; PLANET_COUNT < 4; k++)
+            instances.add(planet.get(k).getModelInstance());
+        instances.add(ship.getModelInstance());
 
         Gdx.input.setInputProcessor(this);
 
@@ -85,85 +85,95 @@ public class PlayScreen implements Screen, InputProcessor {
         modelBatch.render(instances, environment);
         modelBatch.end();
         game.batch.end();
-        if(shipState == 0)
+        if (shipState == 0)
             ship.moveLeft();
-        else if(shipState == 2)
+        else if (shipState == 2)
             ship.moveRight();
         ship.update();
 
-        for(int l = 0; l < PLANET_COUNT; l++)
+        for (int l = 0; l < PLANET_COUNT; l++) {
             planet.get(l).update();
-        //PLANET_COUNT = 0;
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-        for(int j = 0; j<PLANET_COUNT; j++){
-            planet.get(j).dispose();
         }
-        for(int i = 0; i<10; i++){
-            photons.get(i).dispose();
+            for (int i = 0; i < 4; i++) {
+                photons.get(i).update();
+                System.out.println(photons.get(i).getZ());
+                if (photons.get(i).getZ() > 5) {
+                    photons.get(i).resetXY();
+                }
+            }
         }
-        modelBatch.dispose();
-        System.out.println("Play State Disposed");
-    }
 
-    public boolean keyDown(int keycode) {
-        if(keycode == Input.Keys.LEFT)
-            shipState = 0;
 
-        else if(keycode == Input.Keys.RIGHT)
-            shipState = 2;
-        return true;
-    }
+            //PLANET_COUNT = 0;
 
-    public boolean keyUp(int keycode) {
-        if(keycode == Input.Keys.LEFT || keycode == Input.Keys.RIGHT)
-            shipState = 1;
-        return false;
-    }
+        @Override
+        public void resize ( int width, int height){
 
-    public boolean keyTyped(char character) {
-        return false;
-    }
+        }
 
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
+        @Override
+        public void pause () {
 
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
+        }
 
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
+        @Override
+        public void resume () {
 
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
+        }
 
-    public boolean scrolled(int amount) {
-        return false;
+        @Override
+        public void hide () {
+
+        }
+
+        @Override
+        public void dispose () {
+            for (int j = 0; j < PLANET_COUNT; j++) {
+                planet.get(j).dispose();
+            }
+            for (int i = 0; i < 4; i++) {
+                photons.get(i).dispose();
+            }
+            modelBatch.dispose();
+            System.out.println("Play State Disposed");
+        }
+
+        public boolean keyDown ( int keycode){
+            if (keycode == Input.Keys.LEFT)
+                shipState = 0;
+
+            else if (keycode == Input.Keys.RIGHT)
+                shipState = 2;
+            return true;
+        }
+
+        public boolean keyUp ( int keycode){
+            if (keycode == Input.Keys.LEFT || keycode == Input.Keys.RIGHT)
+                shipState = 1;
+            return false;
+        }
+
+        public boolean keyTyped ( char character){
+            return false;
+        }
+
+        public boolean touchDown ( int screenX, int screenY, int pointer, int button){
+            return false;
+        }
+
+        public boolean touchUp ( int screenX, int screenY, int pointer, int button){
+            return false;
+        }
+
+        public boolean touchDragged ( int screenX, int screenY, int pointer){
+            return false;
+        }
+
+        public boolean mouseMoved ( int screenX, int screenY){
+            return false;
+        }
+
+        public boolean scrolled ( int amount){
+            return false;
+        }
     }
-}
