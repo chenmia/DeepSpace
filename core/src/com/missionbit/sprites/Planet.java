@@ -13,11 +13,12 @@ public class Planet extends Floater{
     private Model planet;
     private Color color;
     private Vector3 position;
-    private float spawnRadius = 2;
-    private float spawnAngle;
+    private int spawnNum;
+    private float[] positionx = {2, 1.42f, 1.41f, 0,  -1.44f, -1.27f, -2};
+    private float[] positiony = {0, -1.398f, 1.418f, 2, 1.388f, -1.545f, 0};
 
-    public Planet(float angle, float d, int r) {
-        spawnAngle = (float)(Math.random()*360);
+    public Planet(float d, int r) {
+        spawnNum = (int)(Math.random()*positionx.length);
         modelBuilder = new ModelBuilder();
         if(r == 0)
             color = Color.BLUE;
@@ -39,7 +40,7 @@ public class Planet extends Floater{
         planet = modelBuilder.createSphere(d, d, d, 100, 100,
                 new Material(ColorAttribute.createDiffuse(color)),
                 VertexAttributes.Usage.Position|VertexAttributes.Usage.Normal);
-        modelInstance = new ModelInstance(planet, (float)(spawnRadius * Math.cos(spawnAngle)), (float)(spawnRadius * Math.sin(spawnAngle)), -20);
+        modelInstance = new ModelInstance(planet, positionx[spawnNum], positiony[spawnNum], -20);
         position = modelInstance.transform.getTranslation(new Vector3());
 
     }
@@ -51,13 +52,13 @@ public class Planet extends Floater{
     public void update() {
         position = modelInstance.transform.getTranslation(new Vector3());
         modelInstance.transform.rotate( Vector3.Z, 180);
-        modelInstance.transform.translate( 0, 0, (float) 0.05);
+        modelInstance.transform.translate( 0, 0, (float)(Math.random()*0.3));
 
     }
 
     public void resetXY(){
-        spawnAngle = (float)(Math.random()*360);
-        modelInstance.transform.setToTranslation((float)(spawnRadius * Math.cos(spawnAngle)), (float)(spawnRadius * Math.sin(spawnAngle)), -20);
+        spawnNum = (int)(Math.random()*positionx.length);
+        modelInstance.transform.setToTranslation(positionx[spawnNum], positiony[spawnNum], -50);
     }
     public float getZ(){
         return position.z;

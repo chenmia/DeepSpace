@@ -40,7 +40,7 @@ public class PlayScreen implements Screen, InputProcessor {
         planet = new ArrayList<Planet>();
         for (int j = 0; j < PLANET_COUNT; j++) {
             float planetAngle = (float)(Math.random()*360);
-            planet.add(new Planet(planetAngle, (float) (Math.random() * 2.01), (int) (Math.random() * 8)));
+            planet.add(new Planet((float) (Math.random() * 2.01), (int) (Math.random() * 8)));
             instances.add(planet.get(j).getModelInstance());
         }
         ship = new Spaceship(0, -1, 0);

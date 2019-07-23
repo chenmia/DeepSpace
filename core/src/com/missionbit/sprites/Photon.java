@@ -13,12 +13,20 @@ import com.badlogic.gdx.math.Vector3;
 public class Photon extends Floater{
     private Model photon;
     private Vector3 position;
+    private int spawnNum;
+
+    private float[] positionx = {2, 1.42f, 1.41f, 0,  -1.44f, -1.27f, -2};
+    private float[] positiony = {0, -1.398f, 1.418f, 2, 1.388f, -1.545f, 0};
+
+
+
     public Photon(float x, float y) {
+        spawnNum = (int)(Math.random()*positionx.length);
         modelBuilder = new ModelBuilder();
-        photon = modelBuilder.createBox(0.1f, 0.1f, 0.1f,
+        photon = modelBuilder.createBox(0.15f, 0.15f, 0.15f,
                 new Material(ColorAttribute.createDiffuse(Color.GOLD)),
                 VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
-        modelInstance = new ModelInstance(photon, x,y, -5);
+        modelInstance = new ModelInstance(photon, positionx[spawnNum]*0.5f, positiony[spawnNum]*0.5f, -20);
         position = modelInstance.transform.getTranslation(new Vector3());
     }
 
@@ -28,12 +36,13 @@ public class Photon extends Floater{
 
     public void update() {
         position = modelInstance.transform.getTranslation(new Vector3());
-        modelInstance.transform.translate( 0, 0, (float) 0.05);
+        modelInstance.transform.translate( 0, 0, (float)(Math.random()*0.3));
 
     }
 
     public void resetXY(){
-        modelInstance.transform.translate( (float) (Math.random() * 4 - 2), (float) (Math.random() * 4 - 2), -5);
+        spawnNum = (int)(Math.random()*positionx.length);
+        modelInstance.transform.setToTranslation(positionx[spawnNum]*0.5f, positiony[spawnNum]*0.5f, -5);
     }
     public float getZ(){
         return position.z;
