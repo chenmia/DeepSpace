@@ -13,9 +13,11 @@ public class Planet extends Floater{
     private Model planet;
     private Color color;
     private Vector3 position;
+    private float spawnRadius = 2;
+    private float spawnAngle;
 
-    public Planet(float x, float y, float z, float d, int r) {
-
+    public Planet(float angle, float d, int r) {
+        spawnAngle = (float)(Math.random()*360);
         modelBuilder = new ModelBuilder();
         if(r == 0)
             color = Color.BLUE;
@@ -37,7 +39,7 @@ public class Planet extends Floater{
         planet = modelBuilder.createSphere(d, d, d, 100, 100,
                 new Material(ColorAttribute.createDiffuse(color)),
                 VertexAttributes.Usage.Position|VertexAttributes.Usage.Normal);
-        modelInstance = new ModelInstance(planet, x, y, z);
+        modelInstance = new ModelInstance(planet, (float)(spawnRadius * Math.cos(spawnAngle)), (float)(spawnRadius * Math.sin(spawnAngle)), -20);
         position = modelInstance.transform.getTranslation(new Vector3());
 
     }
@@ -54,7 +56,8 @@ public class Planet extends Floater{
     }
 
     public void resetXY(){
-        modelInstance.transform.translate((float) (Math.random() * 4.01) - 2, (float) (Math.random() * 6.01) - 3, -5);
+        spawnAngle = (float)(Math.random()*360);
+        modelInstance.transform.setToTranslation((float)(spawnRadius * Math.cos(spawnAngle)), (float)(spawnRadius * Math.sin(spawnAngle)), -20);
     }
     public float getZ(){
         return position.z;

@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.missionbit.deepspace.DeepSpace;
 import com.missionbit.sprites.Photon;
@@ -38,7 +39,8 @@ public class PlayScreen implements Screen, InputProcessor {
 //        starfield = new Stars();
         planet = new ArrayList<Planet>();
         for (int j = 0; j < PLANET_COUNT; j++) {
-            planet.add(new Planet((float) (Math.random() * 4.01) - 2, (float) (Math.random() * 6.01) - 3, (float) (Math.random() * 10.01) - 5, (float) (Math.random() * 2.01), (int) (Math.random() * 8)));
+            float planetAngle = (float)(Math.random()*360);
+            planet.add(new Planet(planetAngle, (float) (Math.random() * 2.01), (int) (Math.random() * 8)));
             instances.add(planet.get(j).getModelInstance());
         }
         ship = new Spaceship(0, -1, 0);
