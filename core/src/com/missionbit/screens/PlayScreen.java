@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
@@ -40,7 +41,7 @@ public class PlayScreen implements Screen, InputProcessor {
         planet = new ArrayList<Planet>();
         for (int j = 0; j < PLANET_COUNT; j++) {
             float planetAngle = (float)(Math.random()*360);
-            planet.add(new Planet((float) (Math.random() * 2.01), (int) (Math.random() * 8)));
+            planet.add(new Planet((float) (Math.random() * 1.01) + 1, (int) (Math.random() * 8)));
             instances.add(planet.get(j).getModelInstance());
         }
         ship = new Spaceship(0, -1, 0);
@@ -87,30 +88,35 @@ public class PlayScreen implements Screen, InputProcessor {
         modelBatch.render(instances, environment);
         modelBatch.end();
         game.batch.end();
+
         if (shipState == 0)
             ship.moveLeft();
         else if (shipState == 2)
             ship.moveRight();
         ship.update();
 
+
         for (int l = 0; l < PLANET_COUNT; l++) {
             planet.get(l).update();
             if (planet.get(0).getZ() > 4) {
+                planet.get(0).changeColor((int) (Math.random() * 8));
                 planet.get(0).resetXY();
             }
             if (planet.get(1).getZ() > 4) {
+                planet.get(1).changeColor((int) (Math.random() * 8));
                 planet.get(1).resetXY();
             }
             if (planet.get(2).getZ() > 4) {
+                planet.get(2).changeColor((int) (Math.random() * 8));
                 planet.get(2).resetXY();
             }
             if (planet.get(3).getZ() > 4) {
+                planet.get(3).changeColor((int) (Math.random() * 8));
                 planet.get(3).resetXY();
             }
         }
             for (int i = 0; i < 4; i++) {
                 photons.get(i).update();
-                System.out.println(photons.get(i).getZ());
 
                 if (photons.get(0).getZ() > 5) {
                     photons.get(0).resetXY();
@@ -161,6 +167,7 @@ public class PlayScreen implements Screen, InputProcessor {
             modelBatch.dispose();
             System.out.println("Play State Disposed");
         }
+
 
         public boolean keyDown ( int keycode){
             if (keycode == Input.Keys.LEFT)

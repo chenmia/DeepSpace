@@ -18,8 +18,10 @@ public class Planet extends Floater{
     private float[] positiony = {0, -1.398f, 1.418f, 2, 1.388f, -1.545f, 0};
 
     public Planet(float d, int r) {
+
         spawnNum = (int)(Math.random()*positionx.length);
         modelBuilder = new ModelBuilder();
+
         if(r == 0)
             color = Color.BLUE;
         else if(r==1)
@@ -58,8 +60,10 @@ public class Planet extends Floater{
 
     public void resetXY(){
         spawnNum = (int)(Math.random()*positionx.length);
-        modelInstance.transform.setToTranslation(positionx[spawnNum], positiony[spawnNum], -50);
+        modelInstance.transform.setToTranslation(positionx[spawnNum], positiony[spawnNum], -65);
     }
+
+
     public float getZ(){
         return position.z;
     }
@@ -68,6 +72,28 @@ public class Planet extends Floater{
         planet.dispose();
     }
 
+    public void changeColor(int c){
+
+        if(c == 0)
+            color = Color.BLUE;
+        else if(c==1)
+            color = Color.RED;
+        else if(c==2)
+            color = Color.YELLOW;
+        else if(c==3)
+            color = Color.ORANGE;
+        else if(c==4)
+            color = Color.PINK;
+        else if(c==5)
+            color = Color.PURPLE;
+        else if(c==6)
+            color = Color.GREEN;
+        else if(c==7)
+            color = Color.GRAY;
+
+        modelInstance.materials.get(0).set(ColorAttribute.createDiffuse(color));
+
+    }
 
 }
 //
