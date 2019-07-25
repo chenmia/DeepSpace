@@ -6,9 +6,11 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.Interpolation;
 import com.missionbit.deepspace.DeepSpace;
 import com.missionbit.sprites.Assets;
+import com.missionbit.sprites.Spaceship;
 import com.missionbit.sprites.Stars;
 
 public class MenuScreen implements Screen {
@@ -16,12 +18,16 @@ public class MenuScreen implements Screen {
     private final DeepSpace game;
     private Texture playBtn;
     private Texture title;
+    private Spaceship ship;
+
 
     public MenuScreen(final DeepSpace game, Assets gameAssets) {
         this.game = game;
         assets = gameAssets;
         playBtn = assets.manager.get(Assets.playbtn);
         title = assets.manager.get(Assets.title);
+        ship = new Spaceship(0, -1, 0);
+
     }
 
     @Override
@@ -44,6 +50,7 @@ public class MenuScreen implements Screen {
         game.batch.draw(playBtn, 25, 100);
         game.batch.draw(title, 75, 600);
         game.batch.end();
+
 
     }
 

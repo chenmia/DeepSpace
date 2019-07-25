@@ -21,12 +21,12 @@ public class Photon extends Floater{
 
 
     public Photon(float x, float y) {
-        spawnNum = (int)(Math.random()*positionx.length);
+        spawnNum = (int)(Math.random() * positionx.length);
         modelBuilder = new ModelBuilder();
         photon = modelBuilder.createBox(0.15f, 0.15f, 0.15f,
                 new Material(ColorAttribute.createDiffuse(Color.GOLD)),
                 VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
-        modelInstance = new ModelInstance(photon, positionx[spawnNum]*0.5f, positiony[spawnNum]*0.5f, -20);
+        modelInstance = new ModelInstance(photon, positionx[spawnNum]*0.75f, positiony[spawnNum]*0.75f, -20);
         position = modelInstance.transform.getTranslation(new Vector3());
     }
 
@@ -42,7 +42,7 @@ public class Photon extends Floater{
 
     public void resetXY(){
         spawnNum = (int)(Math.random()*positionx.length);
-        modelInstance.transform.setToTranslation(positionx[spawnNum]*0.5f, positiony[spawnNum]*0.5f, -5);
+        modelInstance.transform.setToTranslation(positionx[spawnNum]*0.25f, positiony[spawnNum]*0.25f, -5);
     }
     public float getZ(){
         return position.z;

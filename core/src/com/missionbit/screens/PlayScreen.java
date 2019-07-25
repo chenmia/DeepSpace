@@ -60,6 +60,7 @@ public class PlayScreen implements Screen, InputProcessor {
 
         for (int k = 0; PLANET_COUNT < 4; k++)
             instances.add(planet.get(k).getModelInstance());
+
         instances.add(ship.getModelInstance());
 
         Gdx.input.setInputProcessor(this);
