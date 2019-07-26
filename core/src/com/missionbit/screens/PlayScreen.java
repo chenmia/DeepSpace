@@ -124,7 +124,7 @@ public class PlayScreen implements Screen, InputProcessor {
         ship.update();
 
     for(int i = 0; i < numShipParticles; i++){
-        shipParticles.get(i).update(ship.getPosition());
+        shipParticles.get(i).update();
     }
 
     for (int l = 0; l < PLANET_COUNT; l++) {
