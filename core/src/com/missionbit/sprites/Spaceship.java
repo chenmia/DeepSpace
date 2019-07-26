@@ -2,9 +2,14 @@ package com.missionbit.sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.loaders.ModelLoader;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.VertexAttributes;
+import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
+import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.Bullet;
 import com.badlogic.gdx.physics.bullet.collision.btBoxShape;
@@ -12,10 +17,14 @@ import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionShape;
 import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
 
+import java.util.ArrayList;
+
+import sun.security.provider.certpath.Vertex;
+
 
 public class Spaceship extends Floater {
     private Model ship;
-    private float radians = 270;
+    private float radians = 80;
     private float radius = 2;
     private double rotationAngle;
     btCollisionObject shipObject;
@@ -29,12 +38,11 @@ public class Spaceship extends Floater {
         position = new Vector3(x, y, z);
         modelInstance.transform.setToRotation(Vector3.Y, 180);
         modelInstance.transform.translate(position);
-        shipShape = new btBoxShape(new Vector3((float)x/2f,(float)y/2f,(float)z/2f));
+
+        shipShape = new btBoxShape(new Vector3((float)0.6,(float)0.1,(float)0.5));
         shipObject = new btCollisionObject();
         shipObject.setCollisionShape(shipShape);
         shipObject.setWorldTransform(modelInstance.transform);
-
-
 
     }
 
@@ -63,9 +71,14 @@ public class Spaceship extends Floater {
         modelInstance.transform.rotate(Vector3.Y, 180);
         modelInstance.transform.rotate(Vector3.Z, (float)(rotationAngle*180/Math.PI) + 180);
         shipObject.setWorldTransform(modelInstance.transform);
+
     }
 
     public btCollisionObject getObject(){
         return shipObject;
+    }
+
+    private void updateThrustParticles(){
+
     }
 }

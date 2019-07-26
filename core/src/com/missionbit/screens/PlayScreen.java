@@ -28,6 +28,7 @@ import com.badlogic.gdx.physics.bullet.collision.btSphereBoxCollisionAlgorithm;
 import com.badlogic.gdx.utils.Array;
 import com.missionbit.deepspace.DeepSpace;
 import com.missionbit.sprites.Assets;
+import com.missionbit.sprites.Particle;
 import com.missionbit.sprites.Photon;
 import com.missionbit.sprites.Planet;
 import com.missionbit.sprites.Spaceship;
@@ -41,6 +42,8 @@ public class PlayScreen implements Screen, InputProcessor {
     private ArrayList<Planet> planet;
     private Spaceship ship;
     private ArrayList<Photon> photons;
+    private ArrayList<Particle> shipParticles;
+    private final int numShipParticles = 10;
     private Array<ModelInstance> instances = new Array<ModelInstance>();
     private int shipState = 1;
     private int PLANET_COUNT = 4;
@@ -70,6 +73,11 @@ public class PlayScreen implements Screen, InputProcessor {
             photons.add(new Photon(((float) (Math.random() * 4 - 2)), (float) (Math.random() * 4 - 2)));
             instances.add(photons.get(i).getModelInstance());
         }
+        shipParticles = new ArrayList<Particle>();
+        for(int i = 0; i < numShipParticles; i++){
+            shipParticles.add(new Particle(ship.getPosition(), Color.RED, (float)0.1));
+            instances.add(shipParticles.get(i).getModelInstance());
+        }
         camera = new PerspectiveCamera(75, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         camera.position.set(0f, 0f, 6f);
@@ -98,12 +106,11 @@ public class PlayScreen implements Screen, InputProcessor {
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 0);
-//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
 
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
-//        starfield.render();
         game.batch.begin();
         modelBatch.begin(camera);
         modelBatch.render(instances, environment);
@@ -116,152 +123,131 @@ public class PlayScreen implements Screen, InputProcessor {
             ship.moveRight();
         ship.update();
 
+    for(int i = 0; i < numShipParticles; i++){
+        shipParticles.get(i).update(ship.getPosition());
+    }
 
+    for (int l = 0; l < PLANET_COUNT; l++) {
+        planet.get(l).update();
+        if (planet.get(l).getZ() > 4) {
+            planet.get(l).changeColor((int) (Math.random() * 8));
+            planet.get(l).resetXY();
+        }
+        if(checkPlanetCollision(l)){
+            game.setScreen(new GameOverScreen(game, assets));
+            this.dispose();
+        }
+    }
+        for (int i = 0; i < 4; i++) {
+            photons.get(i).update();
 
-        for (int l = 0; l < PLANET_COUNT; l++) {
-            planet.get(l).update();
-            if (planet.get(0).getZ() > 4) {
-                planet.get(0).changeColor((int) (Math.random() * 8));
-                planet.get(0).resetXY();
+            if (photons.get(i).getZ() > 5) {
+                photons.get(i).resetXY();
             }
-            if (planet.get(1).getZ() > 4) {
-                planet.get(1).changeColor((int) (Math.random() * 8));
-                planet.get(1).resetXY();
-            }
-            if (planet.get(2).getZ() > 4) {
-                planet.get(2).changeColor((int) (Math.random() * 8));
-                planet.get(2).resetXY();
-            }
-            if (planet.get(3).getZ() > 4) {
-                planet.get(3).changeColor((int) (Math.random() * 8));
-                planet.get(3).resetXY();
-            }
-            if(checkPlanetCollision(l)){
-                System.out.println("Planet "+ l + ": Collides");
+            if(checkPhotonCollision(i)){
+                System.out.println("Photon "+ i + ": Collides");
             }
         }
-            for (int i = 0; i < 4; i++) {
-                photons.get(i).update();
-
-                if (photons.get(0).getZ() > 5) {
-                    photons.get(0).resetXY();
-                }
-                if (photons.get(1).getZ() > 5) {
-                    photons.get(1).resetXY();
-                }
-                if (photons.get(2).getZ() > 5) {
-                    photons.get(2).resetXY();
-                }
-                if (photons.get(3).getZ() > 5) {
-                    photons.get(3).resetXY();
-                }
-                if(checkPhotonCollision(i)){
-                    System.out.println("Photon "+ i + ": Collides");
-                }
-            }
 
 
+    }
+
+    @Override
+    public void resize ( int width, int height){
+
+    }
+
+    @Override
+    public void pause () {
+
+    }
+
+    @Override
+    public void resume () {
+
+    }
+
+    @Override
+    public void hide () {
+
+    }
+
+    @Override
+    public void dispose () {
+        for (int j = 0; j < PLANET_COUNT; j++) {
+            planet.get(j).dispose();
         }
-
-
-            //PLANET_COUNT = 0;
-
-        @Override
-        public void resize ( int width, int height){
-
+        for (int i = 0; i < 4; i++) {
+            photons.get(i).dispose();
         }
-
-        @Override
-        public void pause () {
-
-        }
-
-        @Override
-        public void resume () {
-
-        }
-
-        @Override
-        public void hide () {
-
-        }
-
-        @Override
-        public void dispose () {
-            for (int j = 0; j < PLANET_COUNT; j++) {
-                planet.get(j).dispose();
-            }
-            for (int i = 0; i < 4; i++) {
-                photons.get(i).dispose();
-            }
-            modelBatch.dispose();
-            System.out.println("Play State Disposed");
-        }
+        modelBatch.dispose();
+        System.out.println("Play State Disposed");
+    }
 
 
-        public boolean keyDown ( int keycode){
-            if (keycode == Input.Keys.LEFT)
-                shipState = 0;
+    public boolean keyDown ( int keycode){
+        if (keycode == Input.Keys.LEFT)
+            shipState = 0;
 
-            else if (keycode == Input.Keys.RIGHT)
-                shipState = 2;
-            return true;
-        }
+        else if (keycode == Input.Keys.RIGHT)
+            shipState = 2;
+        return true;
+    }
 
-        public boolean keyUp ( int keycode){
-            if (keycode == Input.Keys.LEFT || keycode == Input.Keys.RIGHT)
-                shipState = 1;
-            return false;
-        }
+    public boolean keyUp ( int keycode){
+        if (keycode == Input.Keys.LEFT || keycode == Input.Keys.RIGHT)
+            shipState = 1;
+        return false;
+    }
 
-        public boolean keyTyped ( char character){
-            return false;
-        }
+    public boolean keyTyped ( char character){
+        return false;
+    }
 
-        public boolean touchDown ( int screenX, int screenY, int pointer, int button){
-            return false;
-        }
+    public boolean touchDown ( int screenX, int screenY, int pointer, int button){
+        return false;
+    }
 
-        public boolean touchUp ( int screenX, int screenY, int pointer, int button){
-            return false;
-        }
+    public boolean touchUp ( int screenX, int screenY, int pointer, int button){
+        return false;
+    }
 
-        public boolean touchDragged ( int screenX, int screenY, int pointer){
-            return false;
-        }
+    public boolean touchDragged ( int screenX, int screenY, int pointer){
+        return false;
+    }
 
-        public boolean mouseMoved ( int screenX, int screenY){
-            return false;
-        }
+    public boolean mouseMoved ( int screenX, int screenY){
+        return false;
+    }
 
-        public boolean scrolled ( int amount){
-            return false;
-        }
+    public boolean scrolled ( int amount){
+        return false;
+    }
 
-        private boolean checkPlanetCollision(int i) {
-            CollisionObjectWrapper co0 = new CollisionObjectWrapper(planet.get(i).getObject());
-            CollisionObjectWrapper co1 = new CollisionObjectWrapper(ship.getObject());
+    private boolean checkPlanetCollision(int i) {
+        CollisionObjectWrapper co0 = new CollisionObjectWrapper(planet.get(i).getObject());
+        CollisionObjectWrapper co1 = new CollisionObjectWrapper(ship.getObject());
 
-            btCollisionAlgorithmConstructionInfo ci = new btCollisionAlgorithmConstructionInfo();
-            ci.setDispatcher1(dispatcher);
-            btCollisionAlgorithm algorithm = new btSphereBoxCollisionAlgorithm(null, ci, co0.wrapper, co1.wrapper, false);
+        btCollisionAlgorithmConstructionInfo ci = new btCollisionAlgorithmConstructionInfo();
+        ci.setDispatcher1(dispatcher);
+        btCollisionAlgorithm algorithm = new btSphereBoxCollisionAlgorithm(null, ci, co0.wrapper, co1.wrapper, false);
 
-            btDispatcherInfo info = new btDispatcherInfo();
-            btManifoldResult result = new btManifoldResult(co0.wrapper, co1.wrapper);
+        btDispatcherInfo info = new btDispatcherInfo();
+        btManifoldResult result = new btManifoldResult(co0.wrapper, co1.wrapper);
 
-            algorithm.processCollision(co0.wrapper, co1.wrapper, info, result);
+        algorithm.processCollision(co0.wrapper, co1.wrapper, info, result);
 
-            boolean r = result.getPersistentManifold().getNumContacts() > 0;
+        boolean r = result.getPersistentManifold().getNumContacts() > 0;
 
-            result.dispose();
-            info.dispose();
-            algorithm.dispose();
-            ci.dispose();
-            co1.dispose();
-            co0.dispose();
+        result.dispose();
+        info.dispose();
+        algorithm.dispose();
+        ci.dispose();
+        co1.dispose();
+        co0.dispose();
 
-            return r;
-        }
+        return r;
+    }
     private boolean checkPhotonCollision(int i) {
         CollisionObjectWrapper co0 = new CollisionObjectWrapper(photons.get(i).getObject());
         CollisionObjectWrapper co1 = new CollisionObjectWrapper(ship.getObject());
@@ -286,4 +272,4 @@ public class PlayScreen implements Screen, InputProcessor {
 
         return r;
     }
-    }
+}
