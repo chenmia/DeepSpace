@@ -49,12 +49,14 @@ public class PlayScreen implements Screen, InputProcessor {
     private btCollisionShape ballshape;
     private btCollisionConfiguration collisionConfig;
     private btDispatcher dispatcher;
+    private Assets assets;
 
     public PlayScreen(final DeepSpace game, Assets gameAssets) {
         Bullet.init();
         collisionConfig = new btDefaultCollisionConfiguration();
         dispatcher = new btCollisionDispatcher(collisionConfig);
         this.game = game;
+        assets = gameAssets;
 //        starfield = new Stars();
         planet = new ArrayList<Planet>();
         for (int j = 0; j < PLANET_COUNT; j++) {
