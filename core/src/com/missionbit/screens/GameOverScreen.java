@@ -14,7 +14,7 @@ public class GameOverScreen implements Screen {
     private PerspectiveCamera camera;
     private Assets assets;
     private Texture playBtn;
-    public GameOverScreen(final DeepSpace game) {
+    public GameOverScreen(final DeepSpace game, Assets gameAssets) {
         this.game = game;
         camera = new PerspectiveCamera(75, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -22,7 +22,7 @@ public class GameOverScreen implements Screen {
         camera.lookAt(0f, 0f, 0f);
         camera.near = 0.1f;
         camera.far = 300f;
-        assets = new Assets();
+        assets = gameAssets;
         playBtn = assets.manager.get(Assets.playbtn);
     }
 

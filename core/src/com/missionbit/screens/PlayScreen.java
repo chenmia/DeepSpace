@@ -27,6 +27,7 @@ import com.badlogic.gdx.physics.bullet.collision.btManifoldResult;
 import com.badlogic.gdx.physics.bullet.collision.btSphereBoxCollisionAlgorithm;
 import com.badlogic.gdx.utils.Array;
 import com.missionbit.deepspace.DeepSpace;
+import com.missionbit.sprites.Assets;
 import com.missionbit.sprites.Photon;
 import com.missionbit.sprites.Planet;
 import com.missionbit.sprites.Spaceship;
@@ -49,7 +50,7 @@ public class PlayScreen implements Screen, InputProcessor {
     private btCollisionConfiguration collisionConfig;
     private btDispatcher dispatcher;
 
-    public PlayScreen(final DeepSpace game) {
+    public PlayScreen(final DeepSpace game, Assets gameAssets) {
         Bullet.init();
         collisionConfig = new btDefaultCollisionConfiguration();
         dispatcher = new btCollisionDispatcher(collisionConfig);
