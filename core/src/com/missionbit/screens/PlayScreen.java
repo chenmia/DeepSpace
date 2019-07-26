@@ -13,12 +13,13 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.bullet.collision.btCollisionShape;
 import com.badlogic.gdx.utils.Array;
 import com.missionbit.deepspace.DeepSpace;
 import com.missionbit.sprites.Photon;
 import com.missionbit.sprites.Planet;
 import com.missionbit.sprites.Spaceship;
-import com.missionbit.sprites.Stars;
+import com.badlogic.gdx.physics.bullet.Bullet;
 
 import java.util.ArrayList;
 
@@ -33,9 +34,11 @@ public class PlayScreen implements Screen, InputProcessor {
     private int PLANET_COUNT = 4;
     private Environment environment;
     private PerspectiveCamera camera;
+    private btCollisionShape ballshape;
 
 
     public PlayScreen(final DeepSpace game) {
+        Bullet.init();
         this.game = game;
 //        starfield = new Stars();
         planet = new ArrayList<Planet>();
@@ -58,7 +61,7 @@ public class PlayScreen implements Screen, InputProcessor {
         camera.far = 300f;
         modelBatch = new ModelBatch();
 
-        for (int k = 0; PLANET_COUNT < 4; k++)
+        for (int k = 0; k < PLANET_COUNT; k++)
             instances.add(planet.get(k).getModelInstance());
 
         instances.add(ship.getModelInstance());

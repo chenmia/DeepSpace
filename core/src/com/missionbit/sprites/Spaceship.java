@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Vector3;
 
 public class Spaceship extends Floater {
     private Model ship;
-    private int health;
     private float radians = 270;
     private float radius = 2;
     private double rotationAngle;
@@ -21,8 +20,8 @@ public class Spaceship extends Floater {
         position = new Vector3(x, y, z);
         modelInstance.transform.setToRotation(Vector3.Y, 180);
         modelInstance.transform.translate(position);
-    }
 
+    }
 
     public void dispose() {
 
@@ -39,10 +38,6 @@ public class Spaceship extends Floater {
         radians += 0.1;
     }
 
-    public void setHealth(int inHealth){
-        health = inHealth;
-    }
-
     public void update(){
         position.x = radius * (float)Math.cos(radians);
         position.y = radius * (float)Math.sin(radians);
@@ -52,5 +47,6 @@ public class Spaceship extends Floater {
         modelInstance.transform.rotate(Vector3.X, 20);
         modelInstance.transform.rotate(Vector3.Y, 180);
         modelInstance.transform.rotate(Vector3.Z, (float)(rotationAngle*180/Math.PI) + 180);
+
     }
 }
