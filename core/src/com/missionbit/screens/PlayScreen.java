@@ -6,8 +6,10 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -56,6 +58,8 @@ public class PlayScreen implements Screen, InputProcessor {
     private Assets assets;
     private int pointCounter;
     private BitmapFont points;
+    private SpriteBatch batch;
+    private OrthographicCamera fontCam;
 
     public PlayScreen(final DeepSpace game, Assets gameAssets) {
         Bullet.init();
@@ -102,6 +106,9 @@ public class PlayScreen implements Screen, InputProcessor {
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1f));
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+
+        batch = new SpriteBatch();
+        fontCam = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
     }
 
     @Override
@@ -122,6 +129,11 @@ public class PlayScreen implements Screen, InputProcessor {
         modelBatch.render(instances, environment);
         modelBatch.end();
         game.batch.end();
+
+        batch.setProjectionMatrix(fontCam.combined);
+        batch.begin();
+        points.draw(batch,"Points: "+ String.valueOf(pointCounter),180,380);
+        batch.end();
 
         if (shipState == 0)
             ship.moveLeft();
