@@ -1,12 +1,29 @@
 package com.missionbit.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.missionbit.deepspace.DeepSpace;
+import com.missionbit.sprites.Assets;
 
 
 public class GameOverScreen implements Screen {
+    private final DeepSpace game;
+    private PerspectiveCamera camera;
+    private Assets assets;
+    private Texture playBtn;
+    public GameOverScreen(final DeepSpace game) {
+        this.game = game;
+        camera = new PerspectiveCamera(75, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-    public GameOverScreen() {
+        camera.position.set(0f, 0f, 6f);
+        camera.lookAt(0f, 0f, 0f);
+        camera.near = 0.1f;
+        camera.far = 300f;
+        assets = new Assets();
+        playBtn = assets.manager.get(Assets.playbtn);
     }
 
     @Override
@@ -16,7 +33,9 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void render(float delta) {
-
+        game.batch.begin();
+        game.batch.draw(playBtn, 25, 100);
+        game.batch.end();
     }
 
     @Override
@@ -41,6 +60,7 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void dispose() {
+        playBtn.dispose();
 
     }
 }
