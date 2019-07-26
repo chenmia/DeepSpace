@@ -13,7 +13,18 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.bullet.collision.CollisionObjectWrapper;
+import com.badlogic.gdx.physics.bullet.collision.btBoxBoxCollisionAlgorithm;
+import com.badlogic.gdx.physics.bullet.collision.btCollisionAlgorithm;
+import com.badlogic.gdx.physics.bullet.collision.btCollisionAlgorithmConstructionInfo;
+import com.badlogic.gdx.physics.bullet.collision.btCollisionConfiguration;
+import com.badlogic.gdx.physics.bullet.collision.btCollisionDispatcher;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionShape;
+import com.badlogic.gdx.physics.bullet.collision.btDefaultCollisionConfiguration;
+import com.badlogic.gdx.physics.bullet.collision.btDispatcher;
+import com.badlogic.gdx.physics.bullet.collision.btDispatcherInfo;
+import com.badlogic.gdx.physics.bullet.collision.btManifoldResult;
+import com.badlogic.gdx.physics.bullet.collision.btSphereBoxCollisionAlgorithm;
 import com.badlogic.gdx.utils.Array;
 import com.missionbit.deepspace.DeepSpace;
 import com.missionbit.sprites.Photon;
@@ -35,10 +46,13 @@ public class PlayScreen implements Screen, InputProcessor {
     private Environment environment;
     private PerspectiveCamera camera;
     private btCollisionShape ballshape;
-
+    private btCollisionConfiguration collisionConfig;
+    private btDispatcher dispatcher;
 
     public PlayScreen(final DeepSpace game) {
         Bullet.init();
+        collisionConfig = new btDefaultCollisionConfiguration();
+        dispatcher = new btCollisionDispatcher(collisionConfig);
         this.game = game;
 //        starfield = new Stars();
         planet = new ArrayList<Planet>();
@@ -100,6 +114,7 @@ public class PlayScreen implements Screen, InputProcessor {
         ship.update();
 
 
+
         for (int l = 0; l < PLANET_COUNT; l++) {
             planet.get(l).update();
             if (planet.get(0).getZ() > 4) {
@@ -118,6 +133,9 @@ public class PlayScreen implements Screen, InputProcessor {
                 planet.get(3).changeColor((int) (Math.random() * 8));
                 planet.get(3).resetXY();
             }
+            if(checkPlanetCollision(l)){
+                System.out.println("Planet "+ l + ": Collides");
+            }
         }
             for (int i = 0; i < 4; i++) {
                 photons.get(i).update();
@@ -134,7 +152,12 @@ public class PlayScreen implements Screen, InputProcessor {
                 if (photons.get(3).getZ() > 5) {
                     photons.get(3).resetXY();
                 }
+                if(checkPhotonCollision(i)){
+                    System.out.println("Photon "+ i + ": Collides");
+                }
             }
+
+
         }
 
 
@@ -211,4 +234,53 @@ public class PlayScreen implements Screen, InputProcessor {
         public boolean scrolled ( int amount){
             return false;
         }
+
+        private boolean checkPlanetCollision(int i) {
+            CollisionObjectWrapper co0 = new CollisionObjectWrapper(planet.get(i).getObject());
+            CollisionObjectWrapper co1 = new CollisionObjectWrapper(ship.getObject());
+
+            btCollisionAlgorithmConstructionInfo ci = new btCollisionAlgorithmConstructionInfo();
+            ci.setDispatcher1(dispatcher);
+            btCollisionAlgorithm algorithm = new btSphereBoxCollisionAlgorithm(null, ci, co0.wrapper, co1.wrapper, false);
+
+            btDispatcherInfo info = new btDispatcherInfo();
+            btManifoldResult result = new btManifoldResult(co0.wrapper, co1.wrapper);
+
+            algorithm.processCollision(co0.wrapper, co1.wrapper, info, result);
+
+            boolean r = result.getPersistentManifold().getNumContacts() > 0;
+
+            result.dispose();
+            info.dispose();
+            algorithm.dispose();
+            ci.dispose();
+            co1.dispose();
+            co0.dispose();
+
+            return r;
+        }
+    private boolean checkPhotonCollision(int i) {
+        CollisionObjectWrapper co0 = new CollisionObjectWrapper(photons.get(i).getObject());
+        CollisionObjectWrapper co1 = new CollisionObjectWrapper(ship.getObject());
+
+        btCollisionAlgorithmConstructionInfo ci = new btCollisionAlgorithmConstructionInfo();
+        ci.setDispatcher1(dispatcher);
+        btCollisionAlgorithm algorithm = new btBoxBoxCollisionAlgorithm(null,ci,co0.wrapper,co1.wrapper);
+
+        btDispatcherInfo info = new btDispatcherInfo();
+        btManifoldResult result = new btManifoldResult(co0.wrapper, co1.wrapper);
+
+        algorithm.processCollision(co0.wrapper, co1.wrapper, info, result);
+
+        boolean r = result.getPersistentManifold().getNumContacts() > 0;
+
+        result.dispose();
+        info.dispose();
+        algorithm.dispose();
+        ci.dispose();
+        co1.dispose();
+        co0.dispose();
+
+        return r;
+    }
     }

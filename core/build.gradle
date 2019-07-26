@@ -7,4 +7,5 @@ eclipse.project {
 }
 dependencies {
     implementation files('gdx-bullet-1.9.9.jar')
+    implementation files('C:/Users/Livingroom PC/Desktop/DeepSpace/gdx-bullet-1.9.9.jar')
 }

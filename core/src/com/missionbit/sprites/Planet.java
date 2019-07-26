@@ -8,6 +8,9 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
+import com.badlogic.gdx.physics.bullet.collision.btCollisionShape;
+import com.badlogic.gdx.physics.bullet.collision.btSphereShape;
 
 public class Planet extends Floater{
     private Model planet;
@@ -16,6 +19,8 @@ public class Planet extends Floater{
     private int spawnNum;
     private float[] positionx = {2, 1.42f, 1.41f, 0,  -1.44f, -1.27f, -2};
     private float[] positiony = {0, -1.398f, 1.418f, 2, 1.388f, -1.545f, 0};
+    btCollisionObject planetObject;
+    btCollisionShape planetShape;
 
     public Planet(float d, int r) {
 
@@ -44,6 +49,10 @@ public class Planet extends Floater{
                 VertexAttributes.Usage.Position|VertexAttributes.Usage.Normal);
         modelInstance = new ModelInstance(planet, positionx[spawnNum], positiony[spawnNum], -20);
         position = modelInstance.transform.getTranslation(new Vector3());
+        planetShape = new btSphereShape(d/2f);
+        planetObject = new btCollisionObject();
+        planetObject.setCollisionShape(planetShape);
+        planetObject.setWorldTransform(modelInstance.transform);
 
     }
 
@@ -55,6 +64,7 @@ public class Planet extends Floater{
         position = modelInstance.transform.getTranslation(new Vector3());
         modelInstance.transform.rotate( Vector3.Z, 180);
         modelInstance.transform.translate( 0, 0, (float)(Math.random()*0.3));
+        planetObject.setWorldTransform(modelInstance.transform);
 
     }
 
@@ -93,6 +103,10 @@ public class Planet extends Floater{
 
         modelInstance.materials.get(0).set(ColorAttribute.createDiffuse(color));
 
+    }
+
+    public btCollisionObject getObject(){
+        return planetObject;
     }
 
 }
