@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -53,6 +54,8 @@ public class PlayScreen implements Screen, InputProcessor {
     private btCollisionConfiguration collisionConfig;
     private btDispatcher dispatcher;
     private Assets assets;
+    private int pointCounter;
+    private BitmapFont points;
 
     public PlayScreen(final DeepSpace game, Assets gameAssets) {
         Bullet.init();
@@ -60,6 +63,9 @@ public class PlayScreen implements Screen, InputProcessor {
         dispatcher = new btCollisionDispatcher(collisionConfig);
         this.game = game;
         assets = gameAssets;
+        pointCounter = 0;
+        points = new BitmapFont();
+        points.setColor(Color.ORANGE);
 //        starfield = new Stars();
         planet = new ArrayList<Planet>();
         for (int j = 0; j < PLANET_COUNT; j++) {
@@ -144,8 +150,11 @@ public class PlayScreen implements Screen, InputProcessor {
             if (photons.get(i).getZ() > 5) {
                 photons.get(i).resetXY();
             }
-            if(checkPhotonCollision(i)){
-                System.out.println("Photon "+ i + ": Collides");
+            if(checkPhotonCollision(i) && photons.get(i).getHitYet() == false){
+                photons.get(i).setHitYet(true);
+                photons.get(i).resetXY();
+                pointCounter++;
+                System.out.println("Points:" + pointCounter);
             }
         }
 

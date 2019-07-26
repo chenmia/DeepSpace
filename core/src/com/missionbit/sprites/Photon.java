@@ -16,7 +16,7 @@ public class Photon extends Floater{
     private Model photon;
     private Vector3 position;
     private int spawnNum;
-
+    private boolean hit;
     private float[] positionx = {2, 1.42f, 1.41f, 0,  -1.44f, -1.27f, -2};
     private float[] positiony = {0, -1.398f, 1.418f, 2, 1.388f, -1.545f, 0};
 
@@ -25,14 +25,15 @@ public class Photon extends Floater{
 
     public Photon(float x, float y) {
         spawnNum = (int)(Math.random() * positionx.length);
+        hit = false;
         modelBuilder = new ModelBuilder();
-        photon = modelBuilder.createBox(0.15f, 0.15f, 0.15f,
+        photon = modelBuilder.createBox(0.5f, 0.5f, 0.5f,
                 new Material(ColorAttribute.createDiffuse(Color.GOLD)),
                 VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
-        modelInstance = new ModelInstance(photon, positionx[spawnNum], positiony[spawnNum], -20);
+        modelInstance = new ModelInstance(photon, positionx[spawnNum]*0.92f, positiony[spawnNum]*0.92f, -20);
         position = modelInstance.transform.getTranslation(new Vector3());
 
-        photonShape = new btBoxShape(new Vector3(0.075f,0.075f,0.075f));
+        photonShape = new btBoxShape(new Vector3(0.25f,0.25f,0.25f));
         photonObject = new btCollisionObject();
         photonObject.setCollisionShape(photonShape);
         photonObject.setWorldTransform(modelInstance.transform);
@@ -44,14 +45,21 @@ public class Photon extends Floater{
 
     public void update() {
         position = modelInstance.transform.getTranslation(new Vector3());
-        modelInstance.transform.translate( 0, 0, (float)(Math.random()*0.3));
+        modelInstance.transform.translate( 0, 0, (float)(Math.random()*0.7));
         photonObject.setWorldTransform(modelInstance.transform);
 
     }
 
     public void resetXY(){
         spawnNum = (int)(Math.random()*positionx.length);
-        modelInstance.transform.setToTranslation(positionx[spawnNum], positiony[spawnNum], -20);
+        modelInstance.transform.setToTranslation(positionx[spawnNum]*0.94f, positiony[spawnNum]*0.93f, -20);
+    }
+    public boolean getHitYet(){
+        return hit;
+    }
+
+    public void setHitYet(boolean boo){
+        hit = boo;
     }
     public float getZ(){
         return position.z;
