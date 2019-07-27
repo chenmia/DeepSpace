@@ -24,7 +24,7 @@ import sun.security.provider.certpath.Vertex;
 
 public class Spaceship extends Floater {
     private Model ship;
-    private float radians = 80;
+    private float angle = 80;
     private float radius = 2;
     private double rotationAngle;
     btCollisionObject shipObject;
@@ -55,15 +55,17 @@ public class Spaceship extends Floater {
     }
 
     public void moveLeft(){
-        radians -= 0.1;
+        angle -= 0.1;
     }
     public void moveRight(){
-        radians += 0.1;
+        angle += 0.1;
     }
-
+    public float getAngle(){
+        return angle;
+    }
     public void update(){
-        position.x = radius * (float)Math.cos(radians);
-        position.y = radius * (float)Math.sin(radians);
+        position.x = radius * (float)Math.cos(angle);
+        position.y = radius * (float)Math.sin(angle);
         rotationAngle = Math.atan2(position.x, position.y);
 
         modelInstance.transform.setToTranslation(position);
