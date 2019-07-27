@@ -58,6 +58,7 @@ public class PlayScreen implements Screen, InputProcessor {
     private Assets assets;
     private float time = 0;
     private static int pointCounter;
+    private static int highscore;
     private static boolean hasSpeedIncreased;
     private BitmapFont points;
     private SpriteBatch batch;
@@ -225,7 +226,13 @@ public class PlayScreen implements Screen, InputProcessor {
     public static int getPoints(){
         return pointCounter;
     }
-
+    public static int getHighscore(){
+        return highscore;
+    }
+    public static void setHighscore(){
+        if(pointCounter > highscore)
+            highscore = pointCounter;
+    }
     public void handleInput() {
 //        if(Gdx.input.isTouched() && Gdx.input.getX() < MenuScreen.returnCam())
 //            shipState = 0;

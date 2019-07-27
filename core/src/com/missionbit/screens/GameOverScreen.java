@@ -20,6 +20,7 @@ public class GameOverScreen implements Screen {
     private OrthographicCamera textureCam;
     private SpriteBatch batch;
     private BitmapFont points;
+    private BitmapFont highscore;
 
     public GameOverScreen(final DeepSpace game, Assets gameAssets) {
         this.game = game;
@@ -29,7 +30,9 @@ public class GameOverScreen implements Screen {
         finalscore = assets.manager.get(Assets.finalscore);
         batch = new SpriteBatch();
         points = new BitmapFont();
+        highscore = new BitmapFont();
         points.setColor(Color.GREEN);
+        highscore.setColor(Color.GREEN);
         textureCam = new OrthographicCamera();
         textureCam.setToOrtho(false,DeepSpace.WIDTH,DeepSpace.HEIGHT);
     }
@@ -50,6 +53,8 @@ public class GameOverScreen implements Screen {
         points.setColor(Color.BLUE);
         points.getData().setScale(3, 3);
         points.draw(batch, String.valueOf(PlayScreen.getPoints()), 370, 375);
+        highscore.getData().setScale(3, 3);
+        highscore.draw(batch, String.valueOf(PlayScreen.getHighscore()), 370, 330);
         batch.draw(tryagain, 45, 100);
         batch.end();
 
