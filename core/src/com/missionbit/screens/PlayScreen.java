@@ -120,7 +120,7 @@ public class PlayScreen implements Screen, InputProcessor {
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
 
         batch = new SpriteBatch();
-        fontCam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        fontCam = new OrthographicCamera(DeepSpace.WIDTH, DeepSpace.HEIGHT);
         addValues();
         addMoreValues();
     }
@@ -177,24 +177,24 @@ public class PlayScreen implements Screen, InputProcessor {
                 planet.get(l).increaseRandomizeSpeed();
         }
 
-    for (int l = 0; l < PLANET_COUNT; l++) {
-        planet.get(l).update();
-        if (planet.get(l).getZ() > 4) {
-            planet.get(l).changeColor((int) (Math.random() * 8));
-            int anotherSpawn = (int)(Math.random()*positionx.size());
-            planet.get(l).resetXY(positionx.get(anotherSpawn), positiony.get(anotherSpawn));
-            positionx.remove(anotherSpawn);
-            positiony.remove(anotherSpawn);
+        for (int l = 0; l < PLANET_COUNT; l++) {
+            planet.get(l).update();
+            if (planet.get(l).getZ() > 4) {
+                planet.get(l).changeColor((int) (Math.random() * 8));
+                int anotherSpawn = (int)(Math.random()*positionx.size());
+                planet.get(l).resetXY(positionx.get(anotherSpawn), positiony.get(anotherSpawn));
+                positionx.remove(anotherSpawn);
+                positiony.remove(anotherSpawn);
 
+            }
+            if(checkPlanetCollision(l)){
+                game.setScreen(new GameOverScreen(game, assets));
+                this.dispose();
+
+            }
         }
-        if(checkPlanetCollision(l)){
-            game.setScreen(new GameOverScreen(game, assets));
-            this.dispose();
 
-        }
-    }
-
-     addValues();
+        addValues();
 
         for (int i = 0; i < 4; i++) {
             photons.get(i).update();
@@ -224,6 +224,10 @@ public class PlayScreen implements Screen, InputProcessor {
 
     public static int getPoints(){
         return pointCounter;
+    }
+
+    public void handleInput() {
+
     }
 
     @Override

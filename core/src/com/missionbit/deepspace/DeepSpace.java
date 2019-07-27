@@ -32,6 +32,13 @@ public class DeepSpace extends Game {
 
 	}
 
+	public int getWidth(){
+		return WIDTH;
+	}
+	public int getHeight(){
+		return HEIGHT;
+	}
+
 	@Override
 	public void render () {
 		super.render();
