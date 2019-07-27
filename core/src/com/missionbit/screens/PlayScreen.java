@@ -151,9 +151,9 @@ public class PlayScreen implements Screen, InputProcessor {
         batch.end();
 
         if (shipState == 0) {
-            ship.setIncrement(-0.1);
+            ship.setIncrement(-0.07);
         } else if (shipState == 2) {
-            ship.setIncrement(0.1);
+            ship.setIncrement(0.07);
         } else if(shipState == 1){
             ship.setIncrement(ship.getIncrement() * 0.9);
         }
