@@ -1,7 +1,5 @@
 package com.missionbit.screens;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.missionbit.deepspace.DeepSpace;
 import com.missionbit.sprites.Assets;
 
