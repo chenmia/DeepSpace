@@ -17,6 +17,7 @@ public class DeepSpace extends Game {
 	private Stars starfield;
 
 
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -32,9 +33,13 @@ public class DeepSpace extends Game {
 
 	@Override
 	public void render () {
-		starfield.render();
+//		starfield.render();
 		super.render();
 
+	}
+
+	public Stars getStars(){
+		return starfield;
 	}
 	
 	@Override
