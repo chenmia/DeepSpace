@@ -17,6 +17,7 @@ public class GameOverScreen implements Screen {
     private Texture gameOver;
     private Texture tryagain;
     private Texture finalscore;
+    private Texture highscoretexture;
     private OrthographicCamera textureCam;
     private SpriteBatch batch;
     private BitmapFont points;
@@ -28,6 +29,7 @@ public class GameOverScreen implements Screen {
         gameOver = assets.manager.get(Assets.gameover);
         tryagain = assets.manager.get(Assets.tryagain);
         finalscore = assets.manager.get(Assets.finalscore);
+        highscoretexture = assets.manager.get(Assets.highscore);
         batch = new SpriteBatch();
         points = new BitmapFont();
         highscore = new BitmapFont();
@@ -50,11 +52,12 @@ public class GameOverScreen implements Screen {
         batch.begin();
         batch.draw(gameOver, 60, 550);
         batch.draw(finalscore, 70, 335);
-        points.setColor(Color.BLUE);
+//        batch.draw(highscoretexture, 70, 275);
+        points.setColor(Color.GREEN);
         points.getData().setScale(3, 3);
         points.draw(batch, String.valueOf(PlayScreen.getPoints()), 370, 375);
-        highscore.getData().setScale(3, 3);
-        highscore.draw(batch, String.valueOf(PlayScreen.getHighscore()), 370, 330);
+//        highscore.getData().setScale(3, 3);
+//        highscore.draw(batch, String.valueOf(PlayScreen.getHighscore()), 370, 330);
         batch.draw(tryagain, 45, 100);
         batch.end();
 

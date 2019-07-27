@@ -17,6 +17,9 @@ public class Assets {
     public static final AssetDescriptor<Texture> gameover = new AssetDescriptor<Texture>("gameover.png", Texture.class);
     public static final AssetDescriptor<Texture> tryagain = new AssetDescriptor<Texture>("tryagain.png", Texture.class);
     public static final AssetDescriptor<Texture> finalscore = new AssetDescriptor<Texture>("finalscore.png", Texture.class);
+    public static final AssetDescriptor<Texture> highscore = new AssetDescriptor<Texture>("highscore.png", Texture.class);
+
+
     public void load() {
 
         manager.load(title);
@@ -24,6 +27,7 @@ public class Assets {
         manager.load(gameover);
         manager.load(tryagain);
         manager.load(finalscore);
+        manager.load(highscore);
     }
 
 
