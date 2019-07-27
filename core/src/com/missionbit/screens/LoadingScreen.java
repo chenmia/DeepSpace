@@ -8,12 +8,12 @@ import com.missionbit.sprites.Assets;
 public class LoadingScreen implements Screen, ApplicationListener {
     private final DeepSpace game;
     Assets assets;
-    private Texture loading;
+//    private Texture loading;
 
     public LoadingScreen(final DeepSpace game) {
         this.game = game;
         assets = new Assets();
-        loading = new Texture("loading.png");
+//        loading = new Texture("loading.png");
         assets.load();
     }
 

@@ -58,7 +58,7 @@ public class PlayScreen implements Screen, InputProcessor {
     private btDispatcher dispatcher;
     private Assets assets;
     private float time = 0;
-    private int pointCounter;
+    private static int pointCounter;
     private static boolean hasSpeedIncreased;
     private BitmapFont points;
     private SpriteBatch batch;
@@ -122,7 +122,6 @@ public class PlayScreen implements Screen, InputProcessor {
 
         batch = new SpriteBatch();
         fontCam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        fontCam = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         addValues();
         addMoreValues();
     }
@@ -190,6 +189,7 @@ public class PlayScreen implements Screen, InputProcessor {
         if(checkPlanetCollision(l)){
             game.setScreen(new GameOverScreen(game, assets));
             this.dispose();
+
         }
     }
 
@@ -220,6 +220,11 @@ public class PlayScreen implements Screen, InputProcessor {
     public static void setHasSpeedIncreased ( boolean boo){
         hasSpeedIncreased = boo;
     }
+
+    public static int getPoints(){
+        return pointCounter;
+    }
+
     @Override
     public void resize ( int width, int height){
 
