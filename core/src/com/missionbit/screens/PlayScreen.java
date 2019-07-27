@@ -57,6 +57,7 @@ public class PlayScreen implements Screen, InputProcessor {
     private btCollisionConfiguration collisionConfig;
     private btDispatcher dispatcher;
     private Assets assets;
+    private float time = 0;
     private int pointCounter;
     private static boolean hasSpeedIncreased;
     private BitmapFont points;
@@ -93,10 +94,6 @@ public class PlayScreen implements Screen, InputProcessor {
             instances.add(photons.get(i).getModelInstance());
         }
         shipParticles = new ArrayList<Particle>();
-        for(int i = 0; i < numShipParticles; i++){
-            shipParticles.add(new Particle(ship.getPosition(), Color.RED, (float)0.1));
-            instances.add(shipParticles.get(i).getModelInstance());
-        }
         camera = new PerspectiveCamera(75, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         camera.position.set(0f, 0f, 6f);
@@ -117,6 +114,7 @@ public class PlayScreen implements Screen, InputProcessor {
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
 
         batch = new SpriteBatch();
+        fontCam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         fontCam = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         addValues();
     }
@@ -143,7 +141,7 @@ public class PlayScreen implements Screen, InputProcessor {
         batch.setProjectionMatrix(fontCam.combined);
         batch.begin();
         points.setColor(Color.GREEN);
-        points.draw(batch,"Photons collected: "+ String.valueOf(pointCounter), 75,380);
+        points.draw(batch, "Photons collected: " + String.valueOf(pointCounter), 75, 380);
         batch.end();
 
 
@@ -153,14 +151,21 @@ public class PlayScreen implements Screen, InputProcessor {
             ship.moveRight();
         ship.update();
 
+        time += delta;
+        if (shipParticles.size() < 10 && time >= 1) {
+            time = 0;
+            shipParticles.add(new Particle(ship.getPosition(), Color.YELLOW, (float) 0.15));
+            instances.add(shipParticles.get(shipParticles.size() - 1).getModelInstance());
+        }
+        for (int i = 0; i < shipParticles.size(); i++) {
+            shipParticles.get(i).update();
+            if (shipParticles.get(i).getZ() > 4) {
+                shipParticles.get(i).setPosition(ship.getAngle(), ship.getPosition());
+            }
+        }
 
-    for(int i = 0; i < numShipParticles; i++){
-        shipParticles.get(i).update();
-    }
-
-        if(hasSpeedIncreased == false && pointCounter!=0 && pointCounter%3==0)
-        {
-            for(int l = 0; l < PLANET_COUNT; l++)
+        if (!hasSpeedIncreased && pointCounter != 0 && pointCounter % 3 == 0) {
+            for (int l = 0; l < PLANET_COUNT; l++)
                 planet.get(l).increaseRandomizeSpeed();
         }
 
@@ -187,7 +192,7 @@ public class PlayScreen implements Screen, InputProcessor {
             if (photons.get(i).getZ() > 5) {
                 photons.get(i).resetXY();
             }
-            if(checkPhotonCollision(i) && photons.get(i).getHitYet() == false){
+            if (checkPhotonCollision(i) && !photons.get(i).getHitYet()) {
                 photons.get(i).setHitYet(true);
                 photons.get(i).resetXY();
                 pointCounter++;
@@ -198,7 +203,7 @@ public class PlayScreen implements Screen, InputProcessor {
 
 
     }
-    public static void setHasSpeedIncreased(boolean boo){
+    public static void setHasSpeedIncreased ( boolean boo){
         hasSpeedIncreased = boo;
     }
     @Override
@@ -286,7 +291,7 @@ public class PlayScreen implements Screen, InputProcessor {
         return false;
     }
 
-    private boolean checkPlanetCollision(int i) {
+    private boolean checkPlanetCollision ( int i){
         CollisionObjectWrapper co0 = new CollisionObjectWrapper(planet.get(i).getObject());
         CollisionObjectWrapper co1 = new CollisionObjectWrapper(ship.getObject());
 
@@ -310,13 +315,13 @@ public class PlayScreen implements Screen, InputProcessor {
 
         return r;
     }
-    private boolean checkPhotonCollision(int i) {
+    private boolean checkPhotonCollision(int i){
         CollisionObjectWrapper co0 = new CollisionObjectWrapper(photons.get(i).getObject());
         CollisionObjectWrapper co1 = new CollisionObjectWrapper(ship.getObject());
 
         btCollisionAlgorithmConstructionInfo ci = new btCollisionAlgorithmConstructionInfo();
         ci.setDispatcher1(dispatcher);
-        btCollisionAlgorithm algorithm = new btBoxBoxCollisionAlgorithm(null,ci,co0.wrapper,co1.wrapper);
+        btCollisionAlgorithm algorithm = new btBoxBoxCollisionAlgorithm(null, ci, co0.wrapper, co1.wrapper);
 
         btDispatcherInfo info = new btDispatcherInfo();
         btManifoldResult result = new btManifoldResult(co0.wrapper, co1.wrapper);
