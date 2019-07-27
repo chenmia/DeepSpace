@@ -6,14 +6,15 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.CollisionObjectWrapper;
 import com.badlogic.gdx.physics.bullet.collision.btBoxBoxCollisionAlgorithm;
@@ -36,7 +37,6 @@ import com.missionbit.sprites.Planet;
 import com.missionbit.sprites.Spaceship;
 import com.badlogic.gdx.physics.bullet.Bullet;
 
-
 import java.util.ArrayList;
 
 public class PlayScreen implements Screen, InputProcessor {
@@ -57,7 +57,10 @@ public class PlayScreen implements Screen, InputProcessor {
     private btDispatcher dispatcher;
     private Assets assets;
     private int pointCounter;
-    private Matrix4 viewMatrix;
+    private BitmapFont points;
+    private SpriteBatch batch;
+    private OrthographicCamera fontCam;
+
     public PlayScreen(final DeepSpace game, Assets gameAssets) {
         Bullet.init();
         collisionConfig = new btDefaultCollisionConfiguration();
@@ -65,7 +68,8 @@ public class PlayScreen implements Screen, InputProcessor {
         this.game = game;
         assets = gameAssets;
         pointCounter = 0;
-//
+        points = new BitmapFont();
+        points.setColor(Color.ORANGE);
 //        starfield = new Stars();
         planet = new ArrayList<Planet>();
         for (int j = 0; j < PLANET_COUNT; j++) {
@@ -102,6 +106,9 @@ public class PlayScreen implements Screen, InputProcessor {
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1f));
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+
+        batch = new SpriteBatch();
+        fontCam = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
     }
 
     @Override
@@ -116,13 +123,17 @@ public class PlayScreen implements Screen, InputProcessor {
         Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
 
         camera.update();
-//        game.batch.setProjectionMatrix(camera.combined);
+        game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
-        game.getStars().render();
         modelBatch.begin(camera);
         modelBatch.render(instances, environment);
         modelBatch.end();
         game.batch.end();
+
+        batch.setProjectionMatrix(fontCam.combined);
+        batch.begin();
+        points.draw(batch,"Points: "+ String.valueOf(pointCounter),180,380);
+        batch.end();
 
         if (shipState == 0)
             ship.moveLeft();
