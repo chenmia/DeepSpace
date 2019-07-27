@@ -17,6 +17,7 @@ public class Photon extends Floater{
     private Vector3 position;
     private int spawnNum;
     private boolean hit;
+    private float randomizeSpeed;
     private float[] positionx = {2, 1.42f, 1.41f, 0,  -1.44f, -1.27f, -2};
     private float[] positiony = {0, -1.398f, 1.418f, 2, 1.388f, -1.545f, 0};
 
@@ -25,6 +26,7 @@ public class Photon extends Floater{
 
     public Photon(float x, float y) {
         spawnNum = (int)(Math.random() * positionx.length);
+        randomizeSpeed = 0.4f;
         hit = false;
         modelBuilder = new ModelBuilder();
         photon = modelBuilder.createBox(0.5f, 0.5f, 0.5f,
@@ -45,7 +47,7 @@ public class Photon extends Floater{
 
     public void update() {
         position = modelInstance.transform.getTranslation(new Vector3());
-        modelInstance.transform.translate( 0, 0, (float)(Math.random()*0.7));
+        modelInstance.transform.translate( 0, 0, (float)(Math.random()));
         photonObject.setWorldTransform(modelInstance.transform);
 
     }
@@ -62,6 +64,7 @@ public class Photon extends Floater{
     public void setHitYet(boolean boo){
         hit = boo;
     }
+
     public float getZ(){
         return position.z;
     }

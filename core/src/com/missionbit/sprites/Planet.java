@@ -11,20 +11,25 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionShape;
 import com.badlogic.gdx.physics.bullet.collision.btSphereShape;
+import com.missionbit.screens.MenuScreen;
+import com.missionbit.screens.PlayScreen;
 
 public class Planet extends Floater{
     private Model planet;
     private Color color;
     private Vector3 position;
     private int spawnNum;
+//    private boolean increased;
     private float[] positionx = {2, 1.42f, 1.41f, 0,  -1.44f, -1.27f, -2};
     private float[] positiony = {0, -1.398f, 1.418f, 2, 1.388f, -1.545f, 0};
+    private float randomizeSpeed;
     btCollisionObject planetObject;
     btCollisionShape planetShape;
 
     public Planet(float d, int r) {
-
+//        increased = false;
         spawnNum = (int)(Math.random()*positionx.length);
+        randomizeSpeed = 0.4f;
         modelBuilder = new ModelBuilder();
 
         if(r == 0)
@@ -55,7 +60,9 @@ public class Planet extends Floater{
         planetObject.setWorldTransform(modelInstance.transform);
 
     }
-
+//    public boolean getIfIncreased(){
+//        return increased;
+//    }
     public void handleInput() {
 
     }
@@ -63,7 +70,7 @@ public class Planet extends Floater{
     public void update() {
         position = modelInstance.transform.getTranslation(new Vector3());
         modelInstance.transform.rotate( Vector3.Z, 180);
-        modelInstance.transform.translate( 0, 0, (float)(Math.random()*0.3));
+        modelInstance.transform.translate( 0, 0, (float)(Math.random()*randomizeSpeed));
         planetObject.setWorldTransform(modelInstance.transform);
 
     }
@@ -72,6 +79,11 @@ public class Planet extends Floater{
         spawnNum = (int)(Math.random()*positionx.length);
         modelInstance.transform.setToTranslation(positionx[spawnNum], positiony[spawnNum], -65);
     }
+    public void increaseRandomizeSpeed(){
+        randomizeSpeed+=0.2f;
+        PlayScreen.setHasSpeedIncreased(true);
+    }
+
 
 
     public float getZ(){

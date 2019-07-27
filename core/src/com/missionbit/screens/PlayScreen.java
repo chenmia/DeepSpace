@@ -57,6 +57,7 @@ public class PlayScreen implements Screen, InputProcessor {
     private btDispatcher dispatcher;
     private Assets assets;
     private int pointCounter;
+    private static boolean hasSpeedIncreased;
     private BitmapFont points;
     private SpriteBatch batch;
     private OrthographicCamera fontCam;
@@ -66,6 +67,7 @@ public class PlayScreen implements Screen, InputProcessor {
         collisionConfig = new btDefaultCollisionConfiguration();
         dispatcher = new btCollisionDispatcher(collisionConfig);
         this.game = game;
+        hasSpeedIncreased = false;
         assets = gameAssets;
         pointCounter = 0;
         points = new BitmapFont();
@@ -132,8 +134,10 @@ public class PlayScreen implements Screen, InputProcessor {
 
         batch.setProjectionMatrix(fontCam.combined);
         batch.begin();
-        points.draw(batch,"Points: "+ String.valueOf(pointCounter),180,380);
+        points.setColor(Color.GREEN);
+        points.draw(batch,"Photons collected: "+ String.valueOf(pointCounter), 75,380);
         batch.end();
+
 
         if (shipState == 0)
             ship.moveLeft();
@@ -141,9 +145,19 @@ public class PlayScreen implements Screen, InputProcessor {
             ship.moveRight();
         ship.update();
 
+
     for(int i = 0; i < numShipParticles; i++){
         shipParticles.get(i).update();
     }
+//        if(pointCounter % 5 != 0)
+//        {
+//            hasSpeedIncreased = false;
+//        }
+        if(hasSpeedIncreased == false && pointCounter!=0 && pointCounter%3==0)
+        {
+            for(int l = 0; l < PLANET_COUNT; l++)
+                planet.get(l).increaseRandomizeSpeed();
+        }
 
     for (int l = 0; l < PLANET_COUNT; l++) {
         planet.get(l).update();
@@ -166,13 +180,16 @@ public class PlayScreen implements Screen, InputProcessor {
                 photons.get(i).setHitYet(true);
                 photons.get(i).resetXY();
                 pointCounter++;
+                hasSpeedIncreased = false;
                 System.out.println("Points:" + pointCounter);
             }
         }
 
 
     }
-
+    public static void setHasSpeedIncreased(boolean boo){
+        hasSpeedIncreased = boo;
+    }
     @Override
     public void resize ( int width, int height){
 
