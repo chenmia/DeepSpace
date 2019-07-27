@@ -21,7 +21,7 @@ public class Particle extends Floater{
     public Particle(Vector3 pos, Color color, float dir){
         modelBuilder = new ModelBuilder();
         particle = modelBuilder.createSphere((float)0.05, (float)0.05, (float)0.05,
-                 10, 10, new Material(ColorAttribute.createDiffuse(color)),
+                10, 10, new Material(ColorAttribute.createDiffuse(color)),
                 VertexAttributes.Usage.Position| VertexAttributes.Usage.Normal);
         modelInstance = new ModelInstance(particle, pos.x, pos.y - (float)0.2, pos.z + 1);
 
