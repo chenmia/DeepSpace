@@ -40,7 +40,7 @@ public class Spaceship extends Floater {
         modelInstance.transform.setToRotation(Vector3.Y, 180);
         modelInstance.transform.translate(position);
 
-        shipShape = new btBoxShape(new Vector3((float)0.6,(float)0.1,(float)0.5));
+        shipShape = new btBoxShape(new Vector3((float)0.6,(float)0.3,(float)0.5));
         shipObject = new btCollisionObject();
         shipObject.setCollisionShape(shipShape);
         shipObject.setWorldTransform(modelInstance.transform);
