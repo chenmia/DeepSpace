@@ -14,24 +14,22 @@ import com.badlogic.gdx.physics.bullet.collision.btSphereShape;
 import com.missionbit.screens.MenuScreen;
 import com.missionbit.screens.PlayScreen;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Planet extends Floater{
     private Model planet;
     private Color color;
     private Vector3 position;
-    private int spawnNum;
-//    private boolean increased;
-    private float[] positionx = {2, 1.42f, 1.41f, 0,  -1.44f, -1.27f, -2};
-    private float[] positiony = {0, -1.398f, 1.418f, 2, 1.388f, -1.545f, 0};
     private float randomizeSpeed;
     btCollisionObject planetObject;
     btCollisionShape planetShape;
 
-    public Planet(float d, int r) {
-//        increased = false;
-        spawnNum = (int)(Math.random()*positionx.length);
-        randomizeSpeed = 0.4f;
-        modelBuilder = new ModelBuilder();
+    public Planet(float d, int r, float x, float y) {
 
+
+        modelBuilder = new ModelBuilder();
+        randomizeSpeed = 0.4f;
         if(r == 0)
             color = Color.BLUE;
         else if(r==1)
@@ -52,7 +50,7 @@ public class Planet extends Floater{
         planet = modelBuilder.createSphere(d, d, d, 100, 100,
                 new Material(ColorAttribute.createDiffuse(color)),
                 VertexAttributes.Usage.Position|VertexAttributes.Usage.Normal);
-        modelInstance = new ModelInstance(planet, positionx[spawnNum], positiony[spawnNum], -20);
+        modelInstance = new ModelInstance(planet, x, y, -20);
         position = modelInstance.transform.getTranslation(new Vector3());
         planetShape = new btSphereShape(d/2f);
         planetObject = new btCollisionObject();
@@ -60,9 +58,7 @@ public class Planet extends Floater{
         planetObject.setWorldTransform(modelInstance.transform);
 
     }
-//    public boolean getIfIncreased(){
-//        return increased;
-//    }
+
     public void handleInput() {
 
     }
@@ -75,9 +71,8 @@ public class Planet extends Floater{
 
     }
 
-    public void resetXY(){
-        spawnNum = (int)(Math.random()*positionx.length);
-        modelInstance.transform.setToTranslation(positionx[spawnNum], positiony[spawnNum], -65);
+    public void resetXY(float i, float j){
+        modelInstance.transform.setToTranslation(i, j, -65);
     }
     public void increaseRandomizeSpeed(){
         randomizeSpeed+=0.2f;
@@ -120,7 +115,11 @@ public class Planet extends Floater{
     public btCollisionObject getObject(){
         return planetObject;
     }
+    public float getPosX(){
+        return position.x;
+    }
+    public float getPosY(){
+        return position.y;
+    }
 
 }
-//
-//

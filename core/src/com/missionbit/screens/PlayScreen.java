@@ -38,6 +38,7 @@ import com.missionbit.sprites.Spaceship;
 import com.badlogic.gdx.physics.bullet.Bullet;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class PlayScreen implements Screen, InputProcessor {
     private final DeepSpace game;
@@ -61,6 +62,10 @@ public class PlayScreen implements Screen, InputProcessor {
     private BitmapFont points;
     private SpriteBatch batch;
     private OrthographicCamera fontCam;
+    private ArrayList<Float> positionx = new ArrayList<Float>(Arrays.asList(2f, 1.42f, 0f,  -1.44f, -1.27f, -2f));
+    private ArrayList<Float> positiony = new ArrayList<Float>(Arrays.asList(-1.398f, 1.418f, 2f, 1.388f, -1.545f, 0f));
+    private ArrayList<Float> tempx = new ArrayList<Float>(Arrays.asList(2f, 1.42f, 0f,  -1.44f, -1.27f, -2f));
+    private ArrayList<Float> tempy = new ArrayList<Float>(Arrays.asList(-1.398f, 1.418f, 2f, 1.388f, -1.545f, 0f));
 
     public PlayScreen(final DeepSpace game, Assets gameAssets) {
         Bullet.init();
@@ -74,8 +79,12 @@ public class PlayScreen implements Screen, InputProcessor {
         points.setColor(Color.ORANGE);
         planet = new ArrayList<Planet>();
         for (int j = 0; j < PLANET_COUNT; j++) {
-            planet.add(new Planet((float) (Math.random() * 1.01) + 1, (int) (Math.random() * 8)));
+            //float planetAngle = (float)(Math.random()*360);
+            int spawnNum = (int)(Math.random()*positionx.size());
+            planet.add(new Planet((float) (Math.random() * 1.01) + 1, (int) (Math.random() * 8), positionx.get(spawnNum), positiony.get(spawnNum)));
             instances.add(planet.get(j).getModelInstance());
+            positionx.remove(spawnNum);
+            positiony.remove(spawnNum);
         }
         ship = new Spaceship(0, -1, 0);
         photons = new ArrayList<Photon>();
@@ -109,6 +118,7 @@ public class PlayScreen implements Screen, InputProcessor {
 
         batch = new SpriteBatch();
         fontCam = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        addValues();
     }
 
     @Override
@@ -158,13 +168,19 @@ public class PlayScreen implements Screen, InputProcessor {
         planet.get(l).update();
         if (planet.get(l).getZ() > 4) {
             planet.get(l).changeColor((int) (Math.random() * 8));
-            planet.get(l).resetXY();
+            int anotherSpawn = (int)(Math.random()*positionx.size());
+            planet.get(l).resetXY(positionx.get(anotherSpawn), positiony.get(anotherSpawn));
+            positionx.remove(anotherSpawn);
+            positiony.remove(anotherSpawn);
+            System.out.println(planet.get(l).getPosX());
+            System.out.println(planet.get(l).getPosY());
         }
         if(checkPlanetCollision(l)){
             game.setScreen(new GameOverScreen(game, assets));
             this.dispose();
         }
     }
+     addValues();
         for (int i = 0; i < 4; i++) {
             photons.get(i).update();
 
@@ -217,6 +233,19 @@ public class PlayScreen implements Screen, InputProcessor {
         System.out.println("Play State Disposed");
     }
 
+    public void addValues(){
+        for(int i = 0; i < positionx.size(); i++){
+            positionx.remove(i);
+        }
+        for(int j = 0; j < positiony.size(); j++){
+            positiony.remove(j);
+        }
+        for(int z = 0; z < tempx.size(); z++){
+            positionx.add(tempx.get(z));
+        }for(int k = 0; k < tempy.size(); k++){
+            positiony.add(tempy.get(k));
+        }
+    }
 
     public boolean keyDown ( int keycode){
         if (keycode == Input.Keys.LEFT)
