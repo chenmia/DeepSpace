@@ -216,7 +216,7 @@ public class PlayScreen implements Screen, InputProcessor {
             }
         }
         addMoreValues();
-        handleInput();
+//        handleInput();
     }
     public static void setHasSpeedIncreased ( boolean boo){
         hasSpeedIncreased = boo;
@@ -227,12 +227,12 @@ public class PlayScreen implements Screen, InputProcessor {
     }
 
     public void handleInput() {
-        if(Gdx.input.isTouched() && Gdx.input.getX() < 240)
-            shipState = 0;
-        if(Gdx.input.isTouched() && Gdx.input.getX() > 240)
-            shipState = 2;
-        else
-            shipState = 1;
+//        if(Gdx.input.isTouched() && Gdx.input.getX() < MenuScreen.returnCam())
+//            shipState = 0;
+//        if(Gdx.input.isTouched() && Gdx.input.getX() > MenuScreen.returnCam())
+//            shipState = 2;
+//        else
+//        shipState = 1;
     }
 
     @Override

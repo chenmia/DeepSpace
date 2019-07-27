@@ -14,6 +14,8 @@ public class MenuScreen implements Screen {
     private Texture playBtn;
     private Texture title;
     private Spaceship ship;
+    private OrthographicCamera menuCam;
+    private static float camCords;
 
 
 
@@ -23,6 +25,9 @@ public class MenuScreen implements Screen {
         playBtn = assets.manager.get(Assets.playbtn);
         title = assets.manager.get(Assets.title);
         ship = new Spaceship(0, -1, 0);
+        menuCam = new OrthographicCamera();
+        menuCam.setToOrtho(false,DeepSpace.WIDTH,DeepSpace.HEIGHT);
+        camCords = menuCam.viewportWidth/2;
     }
 
     @Override
@@ -41,7 +46,7 @@ public class MenuScreen implements Screen {
     public void render(float delta) {
         handleInput();
 
-
+        game.batch.setProjectionMatrix(menuCam.combined);
         game.getStars().render();
         game.batch.begin();
         game.batch.draw(playBtn, 25, 100);
@@ -55,6 +60,10 @@ public class MenuScreen implements Screen {
     @Override
     public void resize(int width, int height) {
 
+    }
+
+    public static float returnCam(){
+        return camCords;
     }
 
     @Override

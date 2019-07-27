@@ -17,7 +17,7 @@ public class GameOverScreen implements Screen {
     private Texture gameOver;
     private Texture tryagain;
     private Texture finalscore;
-    //private OrthographicCamera textureCam;
+    private OrthographicCamera textureCam;
     private SpriteBatch batch;
     private BitmapFont points;
 
@@ -30,6 +30,8 @@ public class GameOverScreen implements Screen {
         batch = new SpriteBatch();
         points = new BitmapFont();
         points.setColor(Color.GREEN);
+        textureCam = new OrthographicCamera();
+        textureCam.setToOrtho(false,DeepSpace.WIDTH,DeepSpace.HEIGHT);
     }
 
     @Override
@@ -40,7 +42,7 @@ public class GameOverScreen implements Screen {
     @Override
     public void render(float delta) {
         handleInput();
-//        batch.setProjectionMatrix(textureCam.combined);
+        batch.setProjectionMatrix(textureCam.combined);
         game.getStars().render();
         batch.begin();
         batch.draw(gameOver, 60, 550);
