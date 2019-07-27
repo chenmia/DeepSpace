@@ -160,7 +160,7 @@ public class PlayScreen implements Screen, InputProcessor {
         ship.update();
 
         time += delta;
-        if (shipParticles.size() < 10 && time >= 1) {
+        if (shipParticles.size() < 20 && time >= 1) {
             time = 0;
             shipParticles.add(new Particle(ship.getPosition(), Color.CYAN, (float) 0.15));
             instances.add(shipParticles.get(shipParticles.size() - 1).getModelInstance());
