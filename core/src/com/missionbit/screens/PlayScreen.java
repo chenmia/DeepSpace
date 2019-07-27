@@ -67,6 +67,10 @@ public class PlayScreen implements Screen, InputProcessor {
     private ArrayList<Float> positiony = new ArrayList<Float>(Arrays.asList(-1.398f, 1.418f, 2f, 1.388f, -1.545f, 0f));
     private ArrayList<Float> tempx = new ArrayList<Float>(Arrays.asList(2f, 1.42f, 0f,  -1.44f, -1.27f, -2f));
     private ArrayList<Float> tempy = new ArrayList<Float>(Arrays.asList(-1.398f, 1.418f, 2f, 1.388f, -1.545f, 0f));
+    private ArrayList<Float> positioni = new ArrayList<Float>(Arrays.asList(2f, 1.41f, 0f,  -1.44f, -1.27f, -2f));
+    private ArrayList<Float> positionj = new ArrayList<Float>(Arrays.asList(0f, -1.398f, 1.418f, 2f, 1.388f, -1.545f));
+    private ArrayList<Float> tempi = new ArrayList<Float>(Arrays.asList(2f, 1.41f, 0f,  -1.44f, -1.27f, -2f));
+    private ArrayList<Float> tempj = new ArrayList<Float>(Arrays.asList(0f, -1.398f, 1.418f, 2f, 1.388f, -1.545f));
 
     public PlayScreen(final DeepSpace game, Assets gameAssets) {
         Bullet.init();
@@ -90,8 +94,11 @@ public class PlayScreen implements Screen, InputProcessor {
         ship = new Spaceship(0, -1, 0);
         photons = new ArrayList<Photon>();
         for (int i = 0; i < 4; i++) {
-            photons.add(new Photon(((float) (Math.random() * 4 - 2)), (float) (Math.random() * 4 - 2)));
+            int spawnNumPhoton = (int)(Math.random()*positioni.size());
+            photons.add(new Photon(((float) (Math.random() * 4 - 2)), (float) (Math.random() * 4 - 2), positioni.get(spawnNumPhoton), positionj.get(spawnNumPhoton)));
             instances.add(photons.get(i).getModelInstance());
+            positioni.remove(spawnNumPhoton);
+            positionj.remove(spawnNumPhoton);
         }
         shipParticles = new ArrayList<Particle>();
         camera = new PerspectiveCamera(75, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -117,6 +124,7 @@ public class PlayScreen implements Screen, InputProcessor {
         fontCam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         fontCam = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         addValues();
+        addMoreValues();
     }
 
     @Override
@@ -177,30 +185,36 @@ public class PlayScreen implements Screen, InputProcessor {
             planet.get(l).resetXY(positionx.get(anotherSpawn), positiony.get(anotherSpawn));
             positionx.remove(anotherSpawn);
             positiony.remove(anotherSpawn);
-            System.out.println(planet.get(l).getPosX());
-            System.out.println(planet.get(l).getPosY());
+
         }
         if(checkPlanetCollision(l)){
             game.setScreen(new GameOverScreen(game, assets));
             this.dispose();
         }
     }
+
      addValues();
+
         for (int i = 0; i < 4; i++) {
             photons.get(i).update();
-
             if (photons.get(i).getZ() > 5) {
-                photons.get(i).resetXY();
+                int anotherSpawnNum = (int)(Math.random()*positioni.size());
+                photons.get(i).resetXY(positioni.get(anotherSpawnNum), positionj.get(anotherSpawnNum));
+                positioni.remove(anotherSpawnNum);
+                positionj.remove(anotherSpawnNum);
             }
             if (checkPhotonCollision(i) && !photons.get(i).getHitYet()) {
+                int anotherSpawn = (int)(Math.random()*positioni.size());
                 photons.get(i).setHitYet(true);
-                photons.get(i).resetXY();
+                photons.get(i).resetXY(positioni.get(anotherSpawn), positionj.get(anotherSpawn));
                 pointCounter++;
                 hasSpeedIncreased = false;
                 System.out.println("Points:" + pointCounter);
+                positioni.remove(anotherSpawn);
+                positionj.remove(anotherSpawn);
             }
         }
-
+        addMoreValues();
 
     }
     public static void setHasSpeedIncreased ( boolean boo){
@@ -249,6 +263,20 @@ public class PlayScreen implements Screen, InputProcessor {
             positionx.add(tempx.get(z));
         }for(int k = 0; k < tempy.size(); k++){
             positiony.add(tempy.get(k));
+        }
+    }
+
+    public void addMoreValues(){
+        for(int i = 0; i < positioni.size(); i++){
+            positioni.remove(i);
+        }
+        for(int j = 0; j < positionj.size(); j++){
+            positionj.remove(j);
+        }
+        for(int z = 0; z < tempi.size(); z++){
+            positioni.add(tempi.get(z));
+        }for(int k = 0; k < tempj.size(); k++){
+            positionj.add(tempj.get(k));
         }
     }
 

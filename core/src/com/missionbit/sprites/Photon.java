@@ -18,21 +18,18 @@ public class Photon extends Floater{
     private int spawnNum;
     private boolean hit;
     private float randomizeSpeed;
-    private float[] positionx = {2, 1.42f, 1.41f, 0,  -1.44f, -1.27f, -2};
-    private float[] positiony = {0, -1.398f, 1.418f, 2, 1.388f, -1.545f, 0};
 
     private btBoxShape photonShape;
     private btCollisionObject photonObject;
 
-    public Photon(float x, float y) {
-        spawnNum = (int)(Math.random() * positionx.length);
+    public Photon(float x, float y, float posx, float posy) {
         randomizeSpeed = 0.4f;
         hit = false;
         modelBuilder = new ModelBuilder();
         photon = modelBuilder.createBox(0.5f, 0.5f, 0.5f,
                 new Material(ColorAttribute.createDiffuse(Color.GOLD)),
                 VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
-        modelInstance = new ModelInstance(photon, positionx[spawnNum]*0.92f, positiony[spawnNum]*0.92f, -20);
+        modelInstance = new ModelInstance(photon, posx*0.92f,posy*0.92f, -20);
         position = modelInstance.transform.getTranslation(new Vector3());
 
         photonShape = new btBoxShape(new Vector3(0.25f,0.25f,0.25f));
@@ -52,10 +49,9 @@ public class Photon extends Floater{
 
     }
 
-    public void resetXY(){
+    public void resetXY(float x, float y){
         hit = false;
-        spawnNum = (int)(Math.random()*positionx.length);
-        modelInstance.transform.setToTranslation(positionx[spawnNum]*0.94f, positiony[spawnNum]*0.93f, -20);
+        modelInstance.transform.setToTranslation(x*0.94f, y*0.93f, -20);
     }
     public boolean getHitYet(){
         return hit;
