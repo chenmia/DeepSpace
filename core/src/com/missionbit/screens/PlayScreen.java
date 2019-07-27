@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.CollisionObjectWrapper;
 import com.badlogic.gdx.physics.bullet.collision.btBoxBoxCollisionAlgorithm;
@@ -35,6 +36,7 @@ import com.missionbit.sprites.Planet;
 import com.missionbit.sprites.Spaceship;
 import com.badlogic.gdx.physics.bullet.Bullet;
 
+
 import java.util.ArrayList;
 
 public class PlayScreen implements Screen, InputProcessor {
@@ -55,8 +57,7 @@ public class PlayScreen implements Screen, InputProcessor {
     private btDispatcher dispatcher;
     private Assets assets;
     private int pointCounter;
-    private BitmapFont points;
-
+    private Matrix4 viewMatrix;
     public PlayScreen(final DeepSpace game, Assets gameAssets) {
         Bullet.init();
         collisionConfig = new btDefaultCollisionConfiguration();
@@ -64,8 +65,7 @@ public class PlayScreen implements Screen, InputProcessor {
         this.game = game;
         assets = gameAssets;
         pointCounter = 0;
-        points = new BitmapFont();
-        points.setColor(Color.ORANGE);
+//
 //        starfield = new Stars();
         planet = new ArrayList<Planet>();
         for (int j = 0; j < PLANET_COUNT; j++) {
@@ -116,8 +116,9 @@ public class PlayScreen implements Screen, InputProcessor {
         Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
 
         camera.update();
-        game.batch.setProjectionMatrix(camera.combined);
+//        game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
+        game.getStars().render();
         modelBatch.begin(camera);
         modelBatch.render(instances, environment);
         modelBatch.end();

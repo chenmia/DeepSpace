@@ -46,6 +46,7 @@ public class MenuScreen implements Screen {
     public void render(float delta) {
         handleInput();
 //        game.batch.setProjectionMatrix(camera.combined); for some reason this doesn't work
+        game.getStars().render();
         game.batch.begin();
         game.batch.draw(playBtn, 25, 100);
         game.batch.draw(title, 75, 600);

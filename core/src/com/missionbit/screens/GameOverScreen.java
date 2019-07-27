@@ -11,17 +11,10 @@ import com.missionbit.sprites.Assets;
 
 public class GameOverScreen implements Screen {
     private final DeepSpace game;
-    private PerspectiveCamera camera;
     private Assets assets;
     private Texture playBtn;
     public GameOverScreen(final DeepSpace game, Assets gameAssets) {
         this.game = game;
-        camera = new PerspectiveCamera(75, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-        camera.position.set(0f, 0f, 6f);
-        camera.lookAt(0f, 0f, 0f);
-        camera.near = 0.1f;
-        camera.far = 300f;
         assets = gameAssets;
         playBtn = assets.manager.get(Assets.playbtn);
     }
@@ -33,9 +26,17 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        handleInput();
+        game.getStars().render();
         game.batch.begin();
-        game.batch.draw(playBtn, 25, 100);
+        game.batch.draw(playBtn, 400, 400);
         game.batch.end();
+    }
+    public void handleInput() {
+        if (Gdx.input.justTouched()) {
+            game.setScreen(new PlayScreen(game, assets));
+            this.dispose();
+        }
     }
 
     @Override
