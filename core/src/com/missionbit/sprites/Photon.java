@@ -44,7 +44,7 @@ public class Photon extends Floater{
 
     public void update() {
         position = modelInstance.transform.getTranslation(new Vector3());
-        modelInstance.transform.translate( 0, 0, (float)(Math.random()));
+        modelInstance.transform.translate( 0, 0, (float)(Math.random()*0.5));
         photonObject.setWorldTransform(modelInstance.transform);
 
     }
