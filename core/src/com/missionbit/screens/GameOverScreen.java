@@ -34,17 +34,21 @@ public class GameOverScreen implements Screen {
     @Override
     public void render(float delta) {
         handleInput();
+//        batch.setProjectionMatrix(textureCam.combined);
         game.getStars().render();
         batch.begin();
         batch.draw(gameOver, 60, 550);
-        batch.draw(tryagain, 40, 100);
+        batch.draw(tryagain, 52, 100);
         batch.end();
+        System.out.println("drawn");
+
 
     }
     public void handleInput() {
         if (Gdx.input.justTouched()) {
             game.setScreen(new PlayScreen(game, assets));
-            this.dispose();
+            //            this.dispose(); this makes the text not show after you call gameover a second time
+
         }
     }
 

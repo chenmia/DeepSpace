@@ -61,7 +61,7 @@ public class PlayScreen implements Screen, InputProcessor {
     private static boolean hasSpeedIncreased;
     private BitmapFont points;
     private SpriteBatch batch;
-    private OrthographicCamera fontCam;
+    private  OrthographicCamera fontCam;
 
     public PlayScreen(final DeepSpace game, Assets gameAssets) {
         Bullet.init();
@@ -72,7 +72,7 @@ public class PlayScreen implements Screen, InputProcessor {
         assets = gameAssets;
         pointCounter = 0;
         points = new BitmapFont();
-        points.setColor(Color.ORANGE);
+        points.setColor(Color.GREEN);
         planet = new ArrayList<Planet>();
         for (int j = 0; j < PLANET_COUNT; j++) {
             planet.add(new Planet((float) (Math.random() * 1.01) + 1, (int) (Math.random() * 8)));

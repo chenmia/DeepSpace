@@ -18,6 +18,7 @@ public class DeepSpace extends Game {
 
 
 
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -33,7 +34,6 @@ public class DeepSpace extends Game {
 
 	@Override
 	public void render () {
-//		starfield.render();
 		super.render();
 
 	}

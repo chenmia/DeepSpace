@@ -1,15 +1,19 @@
 package com.missionbit.screens;
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Texture;
 import com.missionbit.deepspace.DeepSpace;
 import com.missionbit.sprites.Assets;
 
-public class LoadingScreen implements Screen {
+public class LoadingScreen implements Screen, ApplicationListener {
     private final DeepSpace game;
     Assets assets;
+    private Texture loading;
 
     public LoadingScreen(final DeepSpace game) {
         this.game = game;
         assets = new Assets();
+        loading = new Texture("loading.png");
         assets.load();
     }
 
@@ -30,7 +34,17 @@ public class LoadingScreen implements Screen {
     }
 
     @Override
+    public void create() {
+
+    }
+
+    @Override
     public void resize(int width, int height) {
+
+    }
+
+    @Override
+    public void render() {
 
     }
 
