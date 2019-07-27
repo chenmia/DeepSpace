@@ -51,6 +51,7 @@ public class Photon extends Floater{
     }
 
     public void resetXY(){
+        hit = false;
         spawnNum = (int)(Math.random()*positionx.length);
         modelInstance.transform.setToTranslation(positionx[spawnNum]*0.94f, positiony[spawnNum]*0.93f, -20);
     }
