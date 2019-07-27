@@ -38,6 +38,7 @@ import com.missionbit.sprites.Spaceship;
 import com.badlogic.gdx.physics.bullet.Bullet;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class PlayScreen implements Screen, InputProcessor {
     private final DeepSpace game;
