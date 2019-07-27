@@ -6,5 +6,5 @@ eclipse.project {
     name = appName + "-core"
 }
 dependencies {
-    implementation files('gdx-bullet-1.9.9.jar')
+
 }
