@@ -16,12 +16,14 @@ public class Assets {
     public static final AssetDescriptor<Texture> playbtn = new AssetDescriptor<Texture>("playbtn.png", Texture.class);
     public static final AssetDescriptor<Texture> gameover = new AssetDescriptor<Texture>("gameover.png", Texture.class);
     public static final AssetDescriptor<Texture> tryagain = new AssetDescriptor<Texture>("tryagain.png", Texture.class);
+    public static final AssetDescriptor<Texture> finalscore = new AssetDescriptor<Texture>("finalscore.png", Texture.class);
     public void load() {
 
         manager.load(title);
         manager.load(playbtn);
         manager.load(gameover);
         manager.load(tryagain);
+        manager.load(finalscore);
     }
 
 
