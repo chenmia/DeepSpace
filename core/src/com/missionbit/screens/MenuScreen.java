@@ -2,6 +2,7 @@ package com.missionbit.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.missionbit.deepspace.DeepSpace;
 import com.missionbit.sprites.Assets;
@@ -15,13 +16,13 @@ public class MenuScreen implements Screen {
     private Spaceship ship;
 
 
+
     public MenuScreen(final DeepSpace game, Assets gameAssets) {
         this.game = game;
         assets = gameAssets;
         playBtn = assets.manager.get(Assets.playbtn);
         title = assets.manager.get(Assets.title);
         ship = new Spaceship(0, -1, 0);
-
     }
 
     @Override
@@ -39,9 +40,11 @@ public class MenuScreen implements Screen {
     @Override
     public void render(float delta) {
         handleInput();
-//        game.batch.setProjectionMatrix(camera.combined); for some reason this doesn't work
+
+
         game.getStars().render();
         game.batch.begin();
+        game.batch.draw(playBtn, 25, 100);
         game.batch.draw(playBtn, 25, 100);
         game.batch.draw(title, 75, 600);
         game.batch.end();
