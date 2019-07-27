@@ -53,7 +53,6 @@ public class PlayScreen implements Screen, InputProcessor {
     private int PLANET_COUNT = 4;
     private Environment environment;
     private PerspectiveCamera camera;
-    private btCollisionShape ballshape;
     private btCollisionConfiguration collisionConfig;
     private btDispatcher dispatcher;
     private Assets assets;
@@ -151,17 +150,19 @@ public class PlayScreen implements Screen, InputProcessor {
         points.draw(batch, "Photons collected: " + String.valueOf(pointCounter), 75, 380);
         batch.end();
 
-
-        if (shipState == 0)
-            ship.moveLeft();
-        else if (shipState == 2)
-            ship.moveRight();
+        if (shipState == 0) {
+            ship.setIncrement(-0.1);
+        } else if (shipState == 2) {
+            ship.setIncrement(0.1);
+        } else if(shipState == 1){
+            ship.setIncrement(ship.getIncrement() * 0.9);
+        }
         ship.update();
 
         time += delta;
         if (shipParticles.size() < 10 && time >= 1) {
             time = 0;
-            shipParticles.add(new Particle(ship.getPosition(), Color.YELLOW, (float) 0.15));
+            shipParticles.add(new Particle(ship.getPosition(), Color.CYAN, (float) 0.15));
             instances.add(shipParticles.get(shipParticles.size() - 1).getModelInstance());
         }
         for (int i = 0; i < shipParticles.size(); i++) {

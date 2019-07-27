@@ -27,6 +27,7 @@ public class Spaceship extends Floater {
     private float angle = 80;
     private float radius = 2;
     private double rotationAngle;
+    private double increment;
     btCollisionObject shipObject;
     btCollisionShape shipShape;
 
@@ -54,16 +55,17 @@ public class Spaceship extends Floater {
         return position;
     }
 
-    public void moveLeft(){
-        angle -= 0.1;
+    public void setIncrement(double inc){
+        increment = inc;
     }
-    public void moveRight(){
-        angle += 0.1;
+    public double getIncrement(){
+        return increment;
     }
     public float getAngle(){
         return angle;
     }
     public void update(){
+        angle += increment;
         position.x = radius * (float)Math.cos(angle);
         position.y = radius * (float)Math.sin(angle);
         rotationAngle = Math.atan2(position.x, position.y);
@@ -78,9 +80,5 @@ public class Spaceship extends Floater {
 
     public btCollisionObject getObject(){
         return shipObject;
-    }
-
-    private void updateThrustParticles(){
-
     }
 }
