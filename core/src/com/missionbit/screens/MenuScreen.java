@@ -2,16 +2,10 @@ package com.missionbit.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.math.Interpolation;
 import com.missionbit.deepspace.DeepSpace;
 import com.missionbit.sprites.Assets;
 import com.missionbit.sprites.Spaceship;
-import com.missionbit.sprites.Stars;
 
 public class MenuScreen implements Screen {
     private Assets assets;

@@ -72,10 +72,8 @@ public class PlayScreen implements Screen, InputProcessor {
         pointCounter = 0;
         points = new BitmapFont();
         points.setColor(Color.ORANGE);
-//        starfield = new Stars();
         planet = new ArrayList<Planet>();
         for (int j = 0; j < PLANET_COUNT; j++) {
-            float planetAngle = (float)(Math.random()*360);
             planet.add(new Planet((float) (Math.random() * 1.01) + 1, (int) (Math.random() * 8)));
             instances.add(planet.get(j).getModelInstance());
         }
@@ -149,10 +147,7 @@ public class PlayScreen implements Screen, InputProcessor {
     for(int i = 0; i < numShipParticles; i++){
         shipParticles.get(i).update();
     }
-//        if(pointCounter % 5 != 0)
-//        {
-//            hasSpeedIncreased = false;
-//        }
+
         if(hasSpeedIncreased == false && pointCounter!=0 && pointCounter%3==0)
         {
             for(int l = 0; l < PLANET_COUNT; l++)
